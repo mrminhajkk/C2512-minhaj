@@ -276,7 +276,7 @@ booking_id	booking_number	movie_name	about_movie	show_date_time	aadhaar_id	numbe
 
 I have booked tickets for my family. Only 3 tickets for Rubber Ball movie at Star Theatre. [Use the ticket numbers and price from the ticket table].
 
-I also bought two samosas and three pop korn.
+I also bought two sandwich and three vadas.
 
 Please book this ticket as a single transaction in Oracle with exception handling.
 
