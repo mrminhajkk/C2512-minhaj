@@ -265,12 +265,7 @@ WHERE booking_id = 2;  -- Assuming booking_id = 2 for Flight SG345
     The TO_DATE function is used to convert the date and time string into the DATE format.
     Replace booking_id = 1 and booking_id = 2 with the actual booking_id values in your table.
 
-Example of Updated booking Table Data
-
-booking_id	booking_number	movie_name	about_movie	show_date_time	aadhaar_id	number_of_tickets	tickets_amount	food_amount	ticket_plus_food_amount	payment_mode	customer_id
-1	A102	Flight AI102	Rajnikanth acting	20-Nov-2024 10:00 AM	123456789012	3	360	300	660	Credit Card	101
-2	SG345	Flight SG345	Siva Karthikeyan acting	22-Nov-2024 05:00 PM	123456789012	7	1260	700	1960	Debit Card	102
-
+E
 
 
 //---------------------------------------------------------------------------------------------------------------------
