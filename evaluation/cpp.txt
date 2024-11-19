@@ -2386,7 +2386,6 @@ int maxOdd = INT_MIN, secondMaxOdd = INT_MIN;
      }
      if (secondMaxOdd ==INT_MIN)
      {
-         cout << " No second maximum odd temperature found " << endl;
          return -1;
      }
      return secondMaxOdd;
