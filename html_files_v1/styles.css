@@ -1,0 +1,12 @@
+body
+{
+    font-family: Verdana;
+}
+table thead tr th{
+    background-color: rebeccapurple;
+}
+
+label { display: inline-block; width: 100px;} 
+form div{margin-top: 10px;}
+button {margin-top: 10px;}
+input{padding: 4px;}

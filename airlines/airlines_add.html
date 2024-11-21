@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airline Management System</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom Styling -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin-top: 50px;
+            padding: 30px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .btn-primary, .btn-secondary {
+            width: 48%;
+        }
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+
+    <div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="airlines_list.html">Airline Management System</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="airlines_add.html">New Flight</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="airlines_list.html">List Flights</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="airlines_edit.html">Edit Flights</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+    </div>
+
+    <div class="container">
+        <h2>Add Flight Details</h2>
+        <form>
+            <!-- Flight Code -->
+            <div class="mb-3">
+                <label for="FlightCode" class="form-label">Flight Code</label>
+                <input type="text" class="form-control" id="FlightCode" name="FlightCode" placeholder="Enter Flight Code" required>
+            </div>
+
+            <!-- Flight Name -->
+            <div class="mb-3">
+                <label for="FlightName" class="form-label">Airline Name</label>
+                <input type="text" class="form-control" id="FlightName" name="FlightName" placeholder="Enter Flight Name" required>
+            </div>
+
+            <!-- Departure Location -->
+            <div class="mb-3">
+                <label for="DepartureLocation" class="form-label">Departure Location</label>
+                <input type="text" class="form-control" id="DepartureLocation" name="DepartureLocation" placeholder="Enter Departure Location" required>
+            </div>
+
+            <!-- Destination -->
+            <div class="mb-3">
+                <label for="Destination" class="form-label">Destination</label>
+                <input type="text" class="form-control" id="Destination" name="Destination" placeholder="Enter Destination" required>
+            </div>
+
+            <!-- Departure Time -->
+            <div class="mb-3">
+                <label for="DepartureTime" class="form-label">Departure Time</label>
+                <input type="datetime-local" class="form-control" id="DepartureTime" name="DepartureTime" required>
+            </div>
+
+            <!-- Arrival Time -->
+            <div class="mb-3">
+                <label for="ArrivalTime" class="form-label">Arrival Time</label>
+                <input type="datetime-local" class="form-control" id="ArrivalTime" name="ArrivalTime" required>
+            </div>
+
+            <!-- Date of Flight -->
+            <div class="mb-3">
+                <label for="DateOfFlight" class="form-label">Departure Date</label>
+                <input type="date" class="form-control" id="DateOfFlight" name="DateOfFlight" required>
+            </div>
+
+            <!-- Duration -->
+            <div class="mb-3">
+                <label for="Duration" class="form-label">Duration (hh:mm)</label>
+                <input type="text" class="form-control" id="Duration" name="Duration" placeholder="Enter Duration (hh:mm)" required>
+            </div>
+
+            <!-- Price Economy -->
+            <div class="mb-3">
+                <label for="PriceEconomy" class="form-label">Price (Economy)</label>
+                <input type="number" step="0.01" class="form-control" id="PriceEconomy" name="PriceEconomy" placeholder="Enter Economy Price" required>
+            </div>
+
+            <!-- Price Business -->
+            <div class="mb-3">
+                <label for="PriceBusiness" class="form-label">Price (Business)</label>
+                <input type="number" step="0.01" class="form-control" id="PriceBusiness" name="PriceBusiness" placeholder="Enter Business Price" required>
+            </div>
+
+            <!-- Submit and Reset Buttons -->
+            <div class="btn-container mb-3">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="reset" class="btn btn-secondary">Reset</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+</body>
+</html>

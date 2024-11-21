@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airline Management System</title>
+   
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+   
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin-top: 50px;
+            padding: 30px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .table {
+            margin-top: 20px;
+        }
+        .table th, .table td {
+            text-align: center;
+        }
+        .btn-container {
+            display: grid;                   
+            grid-template-columns: auto auto; 
+            gap: 10px;                       
+            justify-items: center;           
+        }
+
+
+       
+        .table-responsive {
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="airlines_list.html">Airline Management System</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="airlines_add.html">New Flight</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="airlines_list.html">List Flights</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="airlines_edit.html">Edit Flights</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+</div>
+
+    <div class="container">
+        <h2>Flight Details</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Flight Code</th>
+                        <th scope="col">Airline Name</th>
+                        <th scope="col">Departure Location</th>
+                        <th scope="col">Destination</th>
+                        <th scope="col">Departure Time</th>
+                        <th scope="col">Arrival Time</th>
+                        <th scope="col">Departure Date</th>
+                        <th scope="col">Duration</th>
+                        <th scope="col">Price (Economy)</th>
+                        <th scope="col">Price (Business)</th>
+                        <th scope="col">Actions</th> 
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>FL123</td>
+                        <td>Flight 123</td>
+                        <td>New York</td>
+                        <td>Los Angeles</td>
+                        <td>2024-12-01 10:00</td>
+                        <td>2024-12-01 14:00</td>
+                        <td>2024-12-01</td>
+                        <td>04:00</td>
+                        <td>$250</td>
+                        <td>$450</td>
+                        <td class="btn-container">
+                            <a href="airlines_edit.html" class="btn btn-warning btn-sm me-2">Edit</a>
+                            <button class="btn btn-danger btn-sm">Delete</button> 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>FL456</td>
+                        <td>Flight 456</td>
+                        <td>San Francisco</td>
+                        <td>Chicago</td>
+                        <td>2024-12-02 08:00</td>
+                        <td>2024-12-02 12:00</td>
+                        <td>2024-12-02</td>
+                        <td>04:00</td>
+                        <td>$300</td>
+                        <td>$550</td>
+                        <td class="btn-container">
+                            <a href="airlines_edit.html" class="btn btn-warning btn-sm me-2">Edit</a>
+                            <button class="btn btn-danger btn-sm">Delete</button> 
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+</body>
+</html>
