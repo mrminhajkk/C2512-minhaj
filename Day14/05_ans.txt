@@ -1,0 +1,170 @@
+
+`Tasks` and answers:
+
+
+1. `Create a C++ project directory`:
+   - Create a directory named `vi_cpp_exercise` to store your C++ program files.
+   ----mkdir vi_cpp_exercise
+   ----this will create the directory vi_cpp_exercise
+   ===============================================================================
+   
+2. `Navigate to the `vi_cpp_exercise` directory`:
+   - Use the `cd` command to move into the `vi_cpp_exercise` directory.
+   ----cd vi_cpp_exercise
+   ----this will change the directory to vi_cpp_exercise 
+   ===============================================================================
+
+3. `Create a C++ program file using `vi``:
+   - Open the `vi` editor and create a file called `simple_calc.cpp`.
+   ----vim simple_calc.cpp
+   ----this will create the file simple_calc.cpp and enter to vim editor
+   ===============================================================================
+
+4. `Write a basic C++ program`:
+   - In the `vi` editor, write a program that adds two numbers and displays the result.
+   - Example:
+     ```cpp
+     #include <iostream>
+     using namespace std;
+
+     int main() {
+         int a, b;
+         cout << "Enter two numbers: ";
+         cin >> a >> b;
+         cout << "The sum is: " << a + b << endl;
+         return 0;
+     }
+     ```
+    ----press i to get into insert mod
+    ----type the above program
+    ===============================================================================
+
+5. `Save and exit the file`:
+   - Save the file and exit `vi` using `:wq`.
+   ----after typing the above program press escape then it will go back to command mode the type :wq to save and exit to terminal
+   ================================================================================
+
+6. `Reopen the file and modify the program`:
+   - Reopen `simple_calc.cpp` using `vi` and 
+   modify the program to also 
+   subtract, multiply, and divide the two numbers.
+   ----again enter vim simple_calc.cpp
+   ----enter insert mode and edit the file as given below:
+   ----#include <iostream>
+        using std::cout;
+        using std::cin;
+        using std::endl;
+
+        int main(){
+                int a,b;
+                cout << "Enter two numbers: ";
+                cin >> a >> b;
+                cout << "The sum is: " << a + b << endl;
+                cout << "The difference is: " << a - b << endl;
+                cout << "The produst is: " << a * b << endl;
+                cout << "The quotient is: " <<a / b << endl;
+                return 0;
+        }
+   ==================================================================================
+
+7. `Use `vi` to navigate and edit the file`:
+   - Use commands like `i` (insert), `x` (delete character), 
+   `dd` (delete line), and `u` (undo) to modify the code.
+   - Add additional code to handle division and 
+   print an error message for division by zero.
+   ----used the above commands and understood their features
+   ----add the error messge by editing the program as:
+   ----#include <iostream>
+        using std::cout;
+        using std::cin;
+        using std::endl;
+
+        int main(){
+                int a,b;
+                cout << "Enter two numbers: ";
+                cin >> a >> b;
+                cout << "The sum is: " << a + b << endl;
+                cout << "The difference is: " << a - b << endl;
+                cout << "The produst is: " << a * b << endl;
+                if(b!=0){
+                        cout << "The quotient is: " << a / b << endl;
+                }
+                else
+                {
+                        cout << " Not defined " << endl;
+                }
+                return 0;
+        }
+   =====================================================================================
+
+8. `Compile the program`:
+   - Compile the updated program using `g++` and 
+   create an executable called `simple_calc`.
+   ----g++ simple_calc.cpp
+   ----a.out file will be created
+   =====================================================================================
+
+9. `Run the compiled program`:
+   - Run the executable to test the program and verify 
+   that it correctly adds, subtracts, multiplies, and 
+   divides two numbers.
+   ----./a.out
+   ----this will give the output:
+   ----Enter two numbers: 2
+        0
+        The sum is: 2
+        The difference is: 2
+        The produst is: 0
+        Not defined
+=========================================================================================
+
+10. `View the contents of the C++ file`:
+    - Use the `cat` command 
+    to view the contents of `simple_calc.cpp`.
+    ----cat simple_calc.cpp
+    ----this will view the file as:
+    ----#include <iostream>
+        using std::cout;
+        using std::cin;
+        using std::endl;
+
+        int main(){
+                int a,b;
+                cout << "Enter two numbers: ";
+                cin >> a >> b;
+                cout << "The sum is: " << a + b << endl;
+                cout << "The difference is: " << a - b << endl;
+                cout << "The produst is: " << a * b << endl;
+                if(b!=0){
+                        cout << "The quotient is: " <<a / b << endl;
+                }
+                else
+                {
+                        cout << "Not defined" << endl;
+                }
+                return 0;
+        }
+============================================================================================
+
+11. `Remove the `simple_calc.cpp` file`:
+    - After testing the program, 
+    delete the C++ file using the `rm` command.
+    ----rm simple_calc.cpp
+    ----this will remove the file
+    =========================================================================================
+
+12. `Remove the project directory`:
+    - Check if the `vi_cpp_exercise` directory is empty and 
+    then remove it.
+    ---- rmdir vi_cpp_exercise
+    ---- this will remove the directory
+    =========================================================================================
+
+
+
+
+
+
+
+
+

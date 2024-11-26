@@ -1,0 +1,144 @@
+Beginner Level Problem Statement: 
+Managing C++ Files and Directories in Linux
+
+`Objective`:  
+Gain hands-on experience 
+with basic Linux commands while working 
+with a C++ project by 
+    creating, 
+    editing, 
+    compiling, and 
+    running simple programs.
+
+---
+
+`Tasks and solution
+
+1. Create a new directory called `my_cpp_project` for your C++ programs.
+----mkdir my_cpp_project
+----this will create the directory my_cpp_project.
+===========================================================
+
+2. Change into the `my_cpp_project` directory.
+----cd my_cpp_project
+----this will switch to the child directory that is my_cpp_project
+===========================================================
+
+3. Create a C++ file named `greet.cpp`
+in the `my_cpp_project` directory.
+----touch greet.cpp
+----this will create the file greet.cpp
+----ls
+----this will list the files in that directory --only file  is greet.cpp
+===========================================================
+
+4. Write a C++ program inside `greet.cpp` 
+that asks the user for their name and prints a greeting message.
+----nano greet.cpp
+----enter the nano editor
+----type the below program
+----#include <iostream>
+    #include <cstdlib>
+
+    using std::cout;
+    using std::cin;
+    using std::endl;
+
+    int main() {
+            char name[200];
+
+            cout << "Enter name: ";
+            cin >> name;
+            cout << "hello " << name << "!!" << endl;
+
+            return EXIT_SUCCESS;
+    }
+============================================================
+
+5. Compile the `greet.cpp` program into an executable.
+----g++ greet.cpp
+----this will compile the program and create an a.out file
+===========================================================
+
+6. Run the compiled executable and ensure
+that it prompts for the user’s name and displays the greeting.
+----./a.out
+----this will run the file and the ouput will be:
+----Enter name: minhaj
+    hello minhaj!!
+===========================================================
+7. Use a Linux command to display the contents of `greet.cpp`.
+----cat greet.cpp
+----this will print the output:
+----#include <iostream>
+    #include <cstdlib>
+
+    using std::cout;
+    using std::cin;
+    using std::endl;
+
+    int main() {
+            char name[200];
+
+            cout << "Enter name: ";
+            cin >> name;
+            cout << "hello " << name << "!!" << endl;
+
+            return EXIT_SUCCESS;
+    }
+==========================================================
+8. Modify the `greet.cpp` file 
+to add a simple farewell message and save the changes.
+----enter the nano editor again
+----nano greet.cpp
+----edit the program to this:
+----#include <iostream>
+    #include <cstdlib>
+
+    using std::cout;
+    using std::cin;
+    using std::endl;
+
+    int main() {
+            char name[200];
+
+            cout << "Enter name: ";
+            cin >> name;
+            cout << "Hello " << name << "!!" << endl;
+            cout << "Bye " << name << "!!" << endl;
+            return EXIT_SUCCESS;
+    }
+========================================================
+9. Compile and run the modified program 
+to ensure it works as expected.
+----g++ greet.cpp
+----a.out file will be created
+----./a.out
+----this will print the output:
+----Enter name: minhaj
+    Hello minhaj!!
+    Bye minhaj!!
+===========================================================
+10. Remove the `greet.cpp` file once you're done.
+----rm greet.cpp
+----this will remove the file
+----rm my_cpp_project
+----this will remove the directory
+===========================================================
+11. Check the contents of the `my_cpp_project` directory, and 
+remove the directory if it’s empty.
+----ls
+----nothing will happen
+===========================================================
+
+---
+
+`Goal`:  
+Through this task, you'll practice 
+using basic Linux commands such as 
+    directory creation, 
+    text file manipulation, 
+    compiling, and 
+    running programs, 
+helping you become more familiar 
+with the Linux environment for C++ development.
