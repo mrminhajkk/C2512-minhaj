@@ -990,6 +990,22 @@ button::-moz-focus-inner, input::-moz-focus-inner {
 	border-top: 5px solid #313131;
 	content: "";
 }
+/* Container for the progress bar */
+.progress-bar-container {
+    background-color: #e0e0e0;
+    border-radius: 20px;
+    height: 20px;
+    margin-top: 5px;
+    width: 100%;
+}
+
+/* The actual progress bar */
+.progress-bar {
+    background-color: #4caf50;
+    height: 100%;
+    border-radius: 20px;
+}
+
 
 .skill-bars li .percent5   { width: 5%; }
 .skill-bars li .percent10  { width: 10%; }
@@ -2500,7 +2516,7 @@ footer .row {
 	max-width: 900px;
 }
 footer .social {
-	text-align: right;
+	text-align: center;
 }
 footer .footer-social {
 	display: inline-block;
