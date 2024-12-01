@@ -1,115 +1,141 @@
 #include <iostream>
 #include <string>
-#include <climits>
+
+using std::string;
+using std::cout;
+using std::endl;
 
 class Vaccination {
 private:
-    std::string VaccinationID;
-    int DosesAdministered;
+    string VaccinationID;  // Renamed from VaccineID
+    int DoseAdministered;  // Renamed from NumberOfDoses
 
 public:
     // Constructor declaration
-    Vaccination(std::string id, int doses);
+    Vaccination(string p_VaccinationID, int p_DoseAdministered);
 
-    // Declare Comparisons class as a friend so it can access private members
-    friend class Comparisons;
+    // Friend comparison functions
+    friend bool LessThan(const Vaccination& first, const Vaccination& second);
+    friend bool LessThanEquals(const Vaccination& first, const Vaccination& second);
+    friend bool GreaterThan(const Vaccination& first, const Vaccination& second);
+    friend bool GreaterThanEquals(const Vaccination& first, const Vaccination& second);
+    friend bool Equals(const Vaccination& first, const Vaccination& second);
+    friend bool NotEquals(const Vaccination& first, const Vaccination& second);
 };
+
+	 bool LessThan(const Vaccination& first, const Vaccination& second);
+     bool LessThanEquals(const Vaccination& first, const Vaccination& second);
+     bool GreaterThan(const Vaccination& first, const Vaccination& second);
+     bool GreaterThanEquals(const Vaccination& first, const Vaccination& second);
+     bool Equals(const Vaccination& first, const Vaccination& second);
+     bool NotEquals(const Vaccination& first, const Vaccination& second);
+
+class HospitalStay {
+    private:
+        string StayID;
+        int NumberOfDays;
+    public:
+        //constructor
+        HospitalStay(string p_StayID, int p_NumberOfDays);
+        //friends
+        friend bool LessThan(const HospitalStay& first, const HospitalStay& second);
+        friend bool LessThanEquals(const HospitalStay& first, const HospitalStay& second);
+        friend bool GreaterThan(const HospitalStay& first, const HospitalStay& second);
+        friend bool GreaterThanEquals(const HospitalStay& first, const HospitalStay& second);
+        friend bool Equals(const HospitalStay& first, const HospitalStay& second);
+        friend bool NotEquals(const HospitalStay& first, const HospitalStay& second);
+};
+//"************"HospitalStayComparisons.h"************
+bool LessThan(const HospitalStay& first, const HospitalStay& second);
+bool LessThanEquals(const HospitalStay& first, const HospitalStay& second);
+bool GreaterThan(const HospitalStay& first, const HospitalStay& second);
+bool GreaterThanEquals(const HospitalStay& first, const HospitalStay& second);
+bool Equals(const HospitalStay& first, const HospitalStay& second);
+bool NotEquals(const HospitalStay& first, const HospitalStay& second);
+
+HospitalStay::HospitalStay(string p_StayID, int p_NumberOfDays) {
+    StayID = p_StayID;
+    NumberOfDays = p_NumberOfDays;
+}
+
+bool LessThan(const HospitalStay& first, const HospitalStay& second) {
+    return (first.NumberOfDays < second.NumberOfDays);
+}
+
+bool LessThanEquals(const HospitalStay& first, const HospitalStay& second) {
+    return (first.NumberOfDays <= second.NumberOfDays);
+}
+
+bool GreaterThan(const HospitalStay& first, const HospitalStay& second) {
+    return (first.NumberOfDays > second.NumberOfDays);
+}
+
+bool GreaterThanEquals(const HospitalStay& first, const HospitalStay& second) {
+    return (first.NumberOfDays >= second.NumberOfDays);
+}
+
+bool Equals(const HospitalStay& first, const HospitalStay& second) {
+    return (first.NumberOfDays == second.NumberOfDays);
+}
+
+bool NotEquals(const HospitalStay& first, const HospitalStay& second) {
+    return (first.NumberOfDays != second.NumberOfDays);
+}
 
 // Constructor definition outside the class
-Vaccination::Vaccination(std::string id, int doses) {
-    VaccinationID = id;
-    DosesAdministered = doses;
+Vaccination::Vaccination(string p_VaccinationID, int p_DoseAdministered) {
+    VaccinationID = p_VaccinationID;
+    DoseAdministered = p_DoseAdministered;
 }
 
-// Now we define the Comparisons class outside of Vaccination class
-
-class Comparisons {
-public:
-    static int findMinDoses(Vaccination vaccinations[], int size);
-    static int findMaxDoses(Vaccination vaccinations[], int size);
-    static int findSecondMinDoses(Vaccination vaccinations[], int size);
-    static int findSecondMaxDoses(Vaccination vaccinations[], int size);
-};
-
-// Function to find the index of the vaccination with the minimum doses administered
-int Comparisons::findMinDoses(Vaccination vaccinations[], int size) {
-    int minIndex = 0;
-    for (int i = 1; i < size; ++i) {
-        if (vaccinations[i].DosesAdministered < vaccinations[minIndex].DosesAdministered) {
-            minIndex = i;
-        }
-    }
-    return minIndex;
+// Comparison functions
+bool LessThan(const Vaccination& first, const Vaccination& second) {
+    return (first.DoseAdministered < second.DoseAdministered);
 }
 
-// Function to find the index of the vaccination with the maximum doses administered
-int Comparisons::findMaxDoses(Vaccination vaccinations[], int size) {
-    int maxIndex = 0;
-    for (int i = 1; i < size; ++i) {
-        if (vaccinations[i].DosesAdministered > vaccinations[maxIndex].DosesAdministered) {
-            maxIndex = i;
-        }
-    }
-    return maxIndex;
+bool LessThanEquals(const Vaccination& first, const Vaccination& second) {
+    return (first.DoseAdministered <= second.DoseAdministered);
 }
 
-// Function to find the index of the vaccination with the second minimum doses administered
-int Comparisons::findSecondMinDoses(Vaccination vaccinations[], int size) {
-    int minIndex = findMinDoses(vaccinations, size);
-    int secondMinIndex = (minIndex == 0) ? 1 : 0;
-    
-    for (int i = 0; i < size; ++i) {
-        if (i != minIndex && vaccinations[i].DosesAdministered < vaccinations[secondMinIndex].DosesAdministered) {
-            secondMinIndex = i;
-        }
-    }
-    
-    return secondMinIndex;
+bool GreaterThan(const Vaccination& first, const Vaccination& second) {
+    return (first.DoseAdministered > second.DoseAdministered);
 }
 
-// Function to find the index of the vaccination with the second maximum doses administered
-int Comparisons::findSecondMaxDoses(Vaccination vaccinations[], int size) {
-    int maxIndex = findMaxDoses(vaccinations, size);
-    int secondMaxIndex = (maxIndex == 0) ? 1 : 0;
-    
-    for (int i = 0; i < size; ++i) {
-        if (i != maxIndex && vaccinations[i].DosesAdministered > vaccinations[secondMaxIndex].DosesAdministered) {
-            secondMaxIndex = i;
-        }
-    }
-    
-    return secondMaxIndex;
+bool GreaterThanEquals(const Vaccination& first, const Vaccination& second) {
+    return (first.DoseAdministered >= second.DoseAdministered);
+}
+
+bool Equals(const Vaccination& first, const Vaccination& second) {
+    return (first.DoseAdministered == second.DoseAdministered);
+}
+
+bool NotEquals(const Vaccination& first, const Vaccination& second) {
+    return (first.DoseAdministered != second.DoseAdministered);
 }
 
 int main() {
-    Vaccination vaccinations[] = {
-        Vaccination("V001", 2),
-        Vaccination("V002", 3),
-        Vaccination("V003", 1),
-        Vaccination("V004", 5),
-        Vaccination("V005", 4)
-    };
+    Vaccination vac1("VAC001", 3);
+    Vaccination vac2("VAC002", 5);
+    HospitalStay hs1("HS001", 5); HospitalStay hs2("HS002", 7);
 
-    int size = sizeof(vaccinations) / sizeof(vaccinations[0]);
+    cout << std::boolalpha;
 
-    // Output the vaccination records based on required conditions
-    std::cout << std::boolalpha;
+    // Test comparison functions
+    cout << "============HOSPITALSTAY COMPARISONS==============" << endl;
+    cout << "HospitalStay LessThan: " << LessThan(hs1, hs2) << endl; // Output: true
+    cout << "HospitalStay LessThanEquals: " << LessThanEquals(hs1, hs2) << endl;
+    cout << "HospitalStay GreaterThan: " << GreaterThan(hs1, hs2) << endl;
+    cout << "HospitalStay GreaterThanEquals: " << GreaterThanEquals(hs1, hs2) << endl;
+    cout << "HospitalStay Equals: " << Equals(hs1, hs2) << endl;
+    cout << "HospitalStay NotEquals: " << NotEquals(hs1, hs2) << endl;
 
-    // Find and output the minimum doses
-    int minIndex = Comparisons::findMinDoses(vaccinations, size);
-    std::cout << "Min Doses: " << vaccinations[minIndex].DosesAdministered << std::endl;  // Output: 1
-    
-    // Find and output the maximum doses
-    int maxIndex = Comparisons::findMaxDoses(vaccinations, size);
-    std::cout << "Max Doses: " << vaccinations[maxIndex].DosesAdministered << std::endl;  // Output: 5
-    
-    // Find and output the second minimum doses
-    int secondMinIndex = Comparisons::findSecondMinDoses(vaccinations, size);
-    std::cout << "2nd Min Doses: " << vaccinations[secondMinIndex].DosesAdministered << std::endl;  // Output: 2
-    
-    // Find and output the second maximum doses
-    int secondMaxIndex = Comparisons::findSecondMaxDoses(vaccinations, size);
-    std::cout << "2nd Max Doses: " << vaccinations[secondMaxIndex].DosesAdministered << std::endl;  // Output: 4
+    cout << "============VACCINATION COMPARISONS===================" << endl;
+    cout << "LessThan: " << LessThan(vac1, vac2) << endl;             // Output: true
+    cout << "LessThanEquals: " << LessThanEquals(vac1, vac2) << endl; // Output: true
+    cout << "GreaterThan: " << GreaterThan(vac1, vac2) << endl;       // Output: false
+    cout << "GreaterThanEquals: " << GreaterThanEquals(vac1, vac2) << endl; // Output: false
+    cout << "Equals: " << Equals(vac1, vac2) << endl;                 // Output: false
+    cout << "NotEquals: " << NotEquals(vac1, vac2) << endl;           // Output: true
 
     return 0;
 }

@@ -1,45 +1,79 @@
 #include <iostream>
 #include <string>
-#include <climits>
+
+using std::string;
+using std::cout;
+using std::endl;
 
 class Vaccination {
+private:
+    string VaccinationID;  // Renamed from VaccineID
+    int DoseAdministered;  // Renamed from NumberOfDoses
+
 public:
-    std::string VaccinationID;
-    int DosesAdministered;
+    // Constructor declaration
+    Vaccination(string p_VaccinationID, int p_DoseAdministered);
 
-   
-    Vaccination(std::string id, int doses);
-
-   
-    friend int findMinDoses(Vaccination vaccinations[], int size);
-    friend int findMaxDoses(Vaccination vaccinations[], int size);
-    friend int findSecondMinDoses(Vaccination vaccinations[], int size);
-    friend int findSecondMaxDoses(Vaccination vaccinations[], int size);
+    // Friend comparison functions
+    friend bool LessThan(const Vaccination& first, const Vaccination& second);
+    friend bool LessThanEquals(const Vaccination& first, const Vaccination& second);
+    friend bool GreaterThan(const Vaccination& first, const Vaccination& second);
+    friend bool GreaterThanEquals(const Vaccination& first, const Vaccination& second);
+    friend bool Equals(const Vaccination& first, const Vaccination& second);
+    friend bool NotEquals(const Vaccination& first, const Vaccination& second);
 };
 
+	 bool LessThan(const Vaccination& first, const Vaccination& second);
+     bool LessThanEquals(const Vaccination& first, const Vaccination& second);
+     bool GreaterThan(const Vaccination& first, const Vaccination& second);
+     bool GreaterThanEquals(const Vaccination& first, const Vaccination& second);
+     bool Equals(const Vaccination& first, const Vaccination& second);
+     bool NotEquals(const Vaccination& first, const Vaccination& second);
 
-Vaccination::Vaccination(std::string id, int doses) {
-    VaccinationID = id;
-    DosesAdministered = doses;
+// Constructor definition outside the class
+Vaccination::Vaccination(string p_VaccinationID, int p_DoseAdministered) {
+    VaccinationID = p_VaccinationID;
+    DoseAdministered = p_DoseAdministered;
 }
 
-
-int findMinDoses(Vaccination vaccinations[], int size) {
-    int minIndex = 0;
-    for (int i = 1; i < size; ++i) {
-        if (vaccinations[i].DosesAdministered < vaccinations[minIndex].DosesAdministered) {
-            minIndex = i;
-        }
-    }
-    return minIndex;
+// Comparison functions
+bool LessThan(const Vaccination& first, const Vaccination& second) {
+    return (first.DoseAdministered < second.DoseAdministered);
 }
 
+bool LessThanEquals(const Vaccination& first, const Vaccination& second) {
+    return (first.DoseAdministered <= second.DoseAdministered);
+}
 
-int findMaxDoses(Vaccination vaccinations[], int size) {
-    int maxIndex = 0;
-    for (int i = 1; i < size; ++i) {
-        if (vaccinations[i].DosesAdministered > vaccinations[maxIndex].DosesAdministered) {
-            maxIndex = i;
-        }
-    }
-    return maxInd
+bool GreaterThan(const Vaccination& first, const Vaccination& second) {
+    return (first.DoseAdministered > second.DoseAdministered);
+}
+
+bool GreaterThanEquals(const Vaccination& first, const Vaccination& second) {
+    return (first.DoseAdministered >= second.DoseAdministered);
+}
+
+bool Equals(const Vaccination& first, const Vaccination& second) {
+    return (first.DoseAdministered == second.DoseAdministered);
+}
+
+bool NotEquals(const Vaccination& first, const Vaccination& second) {
+    return (first.DoseAdministered != second.DoseAdministered);
+}
+
+int main() {
+    Vaccination vac1("VAC001", 3);
+    Vaccination vac2("VAC002", 5);
+
+    cout << std::boolalpha;
+
+    // Test comparison functions
+    cout << "LessThan: " << LessThan(vac1, vac2) << endl;             // Output: true
+    cout << "LessThanEquals: " << LessThanEquals(vac1, vac2) << endl; // Output: true
+    cout << "GreaterThan: " << GreaterThan(vac1, vac2) << endl;       // Output: false
+    cout << "GreaterThanEquals: " << GreaterThanEquals(vac1, vac2) << endl; // Output: false
+    cout << "Equals: " << Equals(vac1, vac2) << endl;                 // Output: false
+    cout << "NotEquals: " << NotEquals(vac1, vac2) << endl;           // Output: true
+
+    return 0;
+}
