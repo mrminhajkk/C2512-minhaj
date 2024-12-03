@@ -1,0 +1,41 @@
+Features of Linux
+
+1. `Open-Source`:  
+   - Free to use, modify, and distribute.
+    -The source code is available to the public, meaning anyone can inspect, enhance, or change it. 
+
+2. `Multi-User`:  
+   - Supports multiple users accessing the system simultaneously.
+    - Each user has their own environment, settings, and resources, which helps avoid conflicts or data interference between users.
+
+3. `Multitasking`:  
+   - Handles multiple processes at the same time.
+    -This includes running programs in parallel or switching between tasks 
+    
+4. `Portability`:  
+   - Runs on different hardware platforms without changes.
+    - This makes software like Linux versatile because it can run on a wide range of devices, from desktops to smartphones, and even embedded systems.
+
+5. `Security`:  
+   - Built-in file permissions, user authentication, and firewalls. ---help protect data and resources from unauthorized access.
+   -file permissions are defined by read (r), write (w), and execute (x) access for the owner, group, and others
+
+6. `File System Support`:  
+   - Supports various file systems like Ext4, XFS, NTFS, etc.---to interact with different types of storage systems and devices
+   
+
+7. `Shell Interface`:  
+   - Powerful command-line interface for system management.
+   -allows users to perform system management tasks, automate processes, and run programs efficiently using text-based commands.
+   -sh, bash, csh,zsh etc
+
+8. `Networking`:  
+   - Strong networking capabilities for servers and internet use. ---a popular choice for servers, web hosting, and internet applications
+   -supports various protocols and services, enabling communication between devices over local or wide-area networks.
+   -http, tcp ,ssh etc
+
+9. `Performance`:  
+   - Efficient resource usage, suitable for servers and desktops.
+
+10. `Community Support`:  
+    - Backed by a large, active global community.  

@@ -123,7 +123,7 @@ void VaccinationManager::create() {
     cout << "Enter Vaccination VaccinationId: ";
     cin >> VaccinationId;
 
-    // Ensure hospital stay VaccinationId is unique
+    // Ensure hospital stay VaccinationId is unique findindexid in line 167
     if (findIndexById(VaccinationId) != -1) {
         cout << "Error:  VaccinationId already exists. Please use a unique VaccinationId.\n";
         return;
