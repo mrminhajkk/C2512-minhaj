@@ -2,7 +2,7 @@
 #include <string>
 using namespace std;
 
-
+// base class 
 class PaymentMethod {
 protected:
     string paymentType;
@@ -12,7 +12,7 @@ public:
         cout << "PaymentMethod Constructor: " << paymentType << endl;
     }
 
-    virtual ~PaymentMethod() {
+    virtual ~PaymentMethod() { // derrived classs destructor will not be called if not virtual
         cout << "PaymentMethod Destructor: " << paymentType << endl;
     }
 
