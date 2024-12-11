@@ -74,13 +74,6 @@ public:
 };
 
 int main() {
-  
-    cout << "Static Object: \n";
-    AudioBook staticAudioBook("The Great Adventure", "John Doe", "Jane Smith", 5.2);
-
-  
-    staticAudioBook.play(); 
-    staticAudioBook.pause(); 
 
     cout << "\nDynamic Object: \n";
     Media* dynamicMedia = new AudioBook("The Great Journey", "Alice Brown", "Michael Green", 7.4);
