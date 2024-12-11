@@ -1,3 +1,9 @@
+// Question 12: `Payment Processing`
+// - `Base Class:` PaymentMethod `{field: paymentType, behavior: processPayment()}`
+// - `Derived Class 1:` CreditCard `{field: cardNumber, behavior: authorize()}`
+// - `Derived Class 2:` DigitalWallet `{field: walletID, behavior: authenticate()}`
+// - `Final Derived Class:` HybridPayment `{field: discount, behavior: splitPayment()}
+
 #include <iostream>
 #include <string>
 using namespace std;

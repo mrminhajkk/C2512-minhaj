@@ -1,3 +1,11 @@
+// Problem 12: `Media and AudioBook`
+// - `Base Class:` `Media`  
+//   - Fields: `title`, `creator`  
+//   - Pure Virtual Behaviors: `play()`, `pause()`.  
+// - `Derived Class:` `AudioBook`  
+//   - Fields: `narrator`, `length`  
+
+
 #include <iostream>
 #include <cstring> 
 using namespace std;
@@ -20,7 +28,7 @@ public:
 
     virtual ~Media() {
         cout << "Media Destructor: Title = " << title << ", Creator = " << creator << endl;
-        delete title;  /
+        delete title;  
         delete creator; 
     }
 

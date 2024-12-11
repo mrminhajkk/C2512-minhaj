@@ -1,3 +1,8 @@
+// Problem 12: `Ecosystem Simulation`
+// - Create a base class `Plant` with fields `height` and `age`, and a behavior `grow()`.
+// - Derive a class `Flower` with fields `color` and a behavior `bloom()`.
+
+
 #include <iostream>
 #include <string>
 using namespace std;
