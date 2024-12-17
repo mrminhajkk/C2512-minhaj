@@ -1,0 +1,20 @@
+class Animal{
+public: 
+     virtual void display(){
+            cout << "Animal eats." << endl;
+                }
+};
+
+class Mammal : public Animal{
+    public:
+        void display() override{
+            cout << "Mammal is an animal. " << endl;
+        }
+}
+
+
+int main(){
+    Animal* animal = new Mammal();
+    animal->display(); 
+}
+
