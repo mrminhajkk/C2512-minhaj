@@ -1,207 +1,159 @@
-/*
-// Coding Question: 1.1
-    Employee {id, age, name} //id, age, name are value objects
-    Employee e1(101,22,"Athira"),e2(102,23,"Bhagya");
-    cout << e1 << endl; //101 22 Athira
-    cout << e2 << endl; //102 23 Bhagya
-    e1.swap(e2);
-    cout << e1 << endl; //102 23 Bhagya
-    cout << e2 << endl; //101 22 Athira
-    //1.2 "id, age, name" as dynamic memory using new and delete
-    //1.3 Programmer { string* tasks; int taskCount; } : Employee | tasks is the multiple tasks - array of task
-        swap function overloadable
-        here, create the dynamic programmer object assigned to employee pointer.
-        field 'tasks' is dynamic memoery.
-        operator << overloadable, swap is overridden.
-    //1.4 replace dynamic fields as smart pointers
-        prove that Employee virtual destructor is not needed.
-        create the dynamic programmer object assigned to employee smart pointer
-    //1.5 construct array of N programmers. read programmers from keyboard.
-        cin >> var; // overload operator>> in employee and programmer
-*/
-
 #include <iostream>
-#include <string>
 #include <cstring>
+#include <utility>
 
 using namespace std;
 
-class Employee
-{
+// Employee class
+class Employee {
 private:
-    int *id;
-    int *age;
-    char *name;
+    int* id;
+    int* age;     
+    char* name;
 
 public:
-    Employee(int id, int age, const char *name);
-    Employee(Employee &&other);
-    Employee &operator=(Employee &&other);
-    virtual ~Employee();
-    virtual void swp(Employee &other);
-    friend ostream &operator<<(ostream &out, const Employee &employee);
-};
+    // Constructor
+    Employee(int id, int age, const char* name) {
+        this->id = new int(id);                  
+        this->age = new int(age);   
+        this->name = new char[strlen(name) + 1]; 
+        strcpy(this->name, name);
+    }
 
-Employee::Employee(int id, int age, const char *name)
-{
-    this->id = new int{id};
-    this->age = new int{age};
-    this->name = new char[strlen(name) + 1];
-    strcpy(this->name, name);
-}
+    // Destructor
+    virtual ~Employee() {
+        delete id;   // Free memory for id
+        delete age;  // Free memory for age
+        delete[] name; // Free memory for name
+    }
 
-Employee::Employee(Employee &&other)
-{
-    this->id = other.id;
-    this->age = other.age;
-    this->name = other.name;
-    other.id = nullptr;
-    other.age = nullptr;
-    other.name = nullptr;
-}
-
-Employee &Employee::operator=(Employee &&other)
-{
-    if (this != &other)
-    {
-        delete this->id;
-        delete this->age;
-        delete[] this->name;
-        this->id = other.id;
-        this->age = other.age;
-        this->name = other.name;
+    // Move Constructor
+    Employee(Employee&& other) noexcept 
+        : id(other.id), age(other.age), name(other.name) {
         other.id = nullptr;
         other.age = nullptr;
-        other.name = nullptr;
+        other.name = nullptr; // Nullify the source to prevent double deletion
     }
-    return *this;
+
+    // Move Assignment Operator
+    Employee& operator=(Employee&& other) noexcept {
+        if (this != &other) {
+            // Free existing memory
+            delete id;
+            delete age;
+            delete[] name;
+
+            // Steal resources from other
+            id = other.id;
+            age = other.age;
+            name = other.name;
+
+            // Nullify the source
+            other.id = nullptr;
+            other.age = nullptr;
+            other.name = nullptr;
+        }
+        return *this;
+    }
+
+    // Swap Function using Move Constructor
+    virtual void swap(Employee& other) {
+        Employee temp(std::move(other)); // Move other into temp
+        other = std::move(*this);       // Move this into other
+        *this = std::move(temp);        // Move temp back into this
+    }
+
+    // << operator to display Employee details
+    friend ostream& operator<<(ostream& os, const Employee& emp);
+};
+
+ostream& operator<<(ostream& os, const Employee& emp) {
+    os << *emp.id << " " << *emp.age << " " << emp.name;
+    return os;
 }
 
-Employee::~Employee()
-{
-    delete this->id;
-    delete this->age;
-    delete[] this->name;
-}
-
-void Employee::swp(Employee &other)
-{
-    Employee temp(move(*this));
-    *this = move(other);
-    other = move(temp);
-}
-
-ostream &operator<<(ostream &out, const Employee &employee)
-{
-    out << "ID: " << *(employee.id) << ", Name: " << employee.name << ", Age: " << *(employee.age);
-    return out;
-}
-
-class Programmer : public Employee
-{
+// Programmer class (derived from Employee)
+class Programmer : public Employee {
 private:
-    string *tasks;
-    int *taskCount;
+    string* tasks; // Array of tasks
+    int taskCount; // Number of tasks
 
 public:
-    Programmer(int v_id, int v_age, const char *v_name, string *v_tasks, int v_taskCount)
-        : Employee(v_id, v_age, v_name)
-    {
-        this->taskCount = new int{v_taskCount};
-        this->tasks = new string[v_taskCount];
-        for (int i = 0; i < v_taskCount; i++)
-        {
-            this->tasks[i] = v_tasks[i];
+    // Constructor
+    Programmer(int id, int age, const char* name, int taskCount, const string* tasks)
+        : Employee(id, age, name), taskCount(taskCount) {
+        this->tasks = new string[taskCount];
+        for (int i = 0; i < taskCount; ++i) {
+            this->tasks[i] = tasks[i];
         }
     }
 
-    Programmer(Programmer &&other) : Employee(move(other))
-    {
-        this->taskCount = other.taskCount;
-        this->tasks = other.tasks;
-        other.taskCount = nullptr;
-        other.tasks = nullptr;
+    // Destructor
+    ~Programmer() {
+        delete[] tasks; // Free dynamically allocated memory for tasks
     }
 
-    Programmer &operator=(Programmer &&other)
-    {
-        if (this != &other)
-        {
-            Employee::operator=(move(other));
-            delete this->taskCount;
-            delete[] this->tasks;
-            this->taskCount = other.taskCount;
-            this->tasks = other.tasks;
-            other.taskCount = nullptr;
+    // Move Constructor
+    Programmer(Programmer&& other) noexcept
+        : Employee(std::move(other)), taskCount(other.taskCount), tasks(other.tasks) {
+        other.tasks = nullptr; // Nullify the source's tasks to prevent double deletion
+    }
+
+    // Move Assignment Operator
+    Programmer& operator=(Programmer&& other) noexcept {
+        if (this != &other) {
+            // Free existing resources
+            delete[] tasks;
+
+            // Move base class resources
+            Employee::operator=(std::move(other));
+
+            // Steal tasks array from other
+            tasks = other.tasks;
+            taskCount = other.taskCount;
+
+            // Nullify the source's tasks
             other.tasks = nullptr;
         }
         return *this;
     }
 
-    ~Programmer()
-    {
-        delete taskCount;
-        delete[] tasks;
+    // Swap function using Move Constructor
+    void swap(Programmer& other) {
+        Programmer temp(std::move(other)); // Move other into temp
+        other = std::move(*this);          // Move this into other
+        *this = std::move(temp);           // Move temp back into this
     }
 
-    void swp(Employee &other) override
-    {
-        if (Programmer *pOther = dynamic_cast<Programmer *>(&other))
-        {
-            Programmer temp(move(*this));
-            *this = move(*pOther);
-            *pOther = move(temp);
-        }
-        else
-        {
-            throw runtime_error("Incompatible types for swapping.");
-        }
-    }
-
-    friend ostream &operator<<(ostream &out, const Programmer &programmer);
+    // Overload << operator to display Programmer details
+    friend ostream& operator<<(ostream& os, const Programmer& prog);
 };
 
-ostream &operator<<(ostream &out, const Programmer &programmer)
-{
-    out << static_cast<const Employee &>(programmer);
-    out << ", Task Count: " << *(programmer.taskCount) << ", Tasks: [";
-    for (int i = 0; i < *(programmer.taskCount); i++)
-    {
-        out << programmer.tasks[i];
-        if (i < *(programmer.taskCount) - 1)
-            out << ", ";
+ostream& operator<<(ostream& os, const Programmer& prog) {
+    os << static_cast<const Employee&>(prog) << " | Tasks: ";
+    for (int i = 0; i < prog.taskCount; ++i) {
+        os << prog.tasks[i] << (i < prog.taskCount - 1 ? ", " : "");
     }
-    out << "]";
-    return out;
+    return os;
 }
 
-int main()
-{
-    string tasks1[] = {"Code", "Debug", "Test"};
-    Employee *p1 = new Programmer(101, 22, "Athira", tasks1, 3);
+int main() {
+    // Creating Employee and Programmer objects
+    const string tasks1[] = {"Code", "Debug", "Test"};
+    Programmer p1(101, 30, "Alice", 3, tasks1);
 
-    string tasks2[] = {"Design", "Implement"};
-    Employee *p2 = new Programmer(102, 23, "Bhagya", tasks2, 2);
+    const string tasks2[] = {"Design", "Develop", "Deploy"};
+    Programmer p2(102, 28, "Bob", 3, tasks2);
 
-    cout << "Before Swap:" << endl;
-    cout << *p1 << endl;
-    cout << *p2 << endl;
+    cout << "Before swapping:" << endl;
+    cout << p1 << endl; // Output: 101 30 Alice | Tasks: Code, Debug, Test
+    cout << p2 << endl; // Output: 102 28 Bob | Tasks: Design, Develop, Deploy
 
-    try
-    {
-        p1->swp(*p2);
-    }
-    catch (const runtime_error &e)
-    {
-        cerr << "Error: " << e.what() << endl;
-    }
+    p1.swap(p2);
 
-    cout << "\nAfter Swap:" << endl;
-    cout << *p1 << endl;
-    cout << *p2 << endl;
-
-    delete p1;
-    delete p2;
+    cout << "After swapping:" << endl;
+    cout << p1 << endl; // Output: 102 28 Bob | Tasks: Design, Develop, Deploy
+    cout << p2 << endl; // Output: 101 30 Alice | Tasks: Code, Debug, Test
 
     return 0;
 }

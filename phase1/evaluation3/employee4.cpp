@@ -1,181 +1,138 @@
-/*
-// Coding Question: 1.1
-    Employee {id, age, name} //id, age, name are value objects
-    Employee e1(101,22,"Athira"),e2(102,23,"Bhagya");
-    cout << e1 << endl; //101 22 Athira
-    cout << e2 << endl; //102 23 Bhagya
-    e1.swap(e2);
-    cout << e1 << endl; //102 23 Bhagya
-    cout << e2 << endl; //101 22 Athira
-    //1.2 "id, age, name" as dynamic memory using new and delete
-    //1.3 Programmer { string* tasks; int taskCount; } : Employee | tasks is the multiple tasks - array of task
-        swap function overloadable
-        here, create the dynamic programmer object assigned to employee pointer.
-        field 'tasks' is dynamic memoery.
-        operator << overloadable, swap is overridden.
-    //1.4 replace dynamic fields as smart pointers
-        prove that Employee virtual destructor is not needed.
-        create the dynamic programmer object assigned to employee smart pointer
-    //1.5 construct array of N programmers. read programmers from keyboard.
-        cin >> var; // overload operator>> in employee and programmer
-*/
-
 #include <iostream>
-#include <string>
-#include <memory>
 #include <cstring>
+#include <utility>
+#include <memory>  // For smart pointers
+#include <vector>  // For dynamic array of tasks
 
 using namespace std;
 
-class Employee
-{
+// Employee class
+class Employee {
 private:
     unique_ptr<int> id;
     unique_ptr<int> age;
     unique_ptr<char[]> name;
 
 public:
-    Employee(int id, int age, const char *name);
-    Employee(Employee &&other) noexcept;
-    Employee &operator=(Employee &&other) noexcept;
-    virtual ~Employee() = default;
-    virtual void swp(Employee &other);
-    friend ostream &operator<<(ostream &out, const Employee &employee);
+    // Constructor
+    Employee(int id, int age, const char* name) {
+        this->id = make_unique<int>(id);
+        this->age = make_unique<int>(age);
+        this->name = make_unique<char[]>(strlen(name) + 1);
+        strcpy(this->name.get(), name);
+    }
+
+    // Move Constructor
+    Employee(Employee&& other) noexcept
+        : id(std::move(other.id)), age(std::move(other.age)), name(std::move(other.name)) {}
+
+    // Move Assignment Operator
+    Employee& operator=(Employee&& other) noexcept {
+        if (this != &other) {
+            id = std::move(other.id);
+            age = std::move(other.age);
+            name = std::move(other.name);
+        }
+        return *this;
+    }
+
+    // Swap Function using Move Constructor
+    virtual void swap(Employee& other) {
+        Employee temp(std::move(other));
+        other = std::move(*this);
+        *this = std::move(temp);
+    }
+
+    // << operator to display Employee details
+    friend ostream& operator<<(ostream& os, const Employee& emp);
 };
 
-Employee::Employee(int id, int age, const char *name)
-{
-    this->id = make_unique<int>(id);
-    this->age = make_unique<int>(age);
-    this->name = make_unique<char[]>(strlen(name) + 1);
-    strcpy(this->name.get(), name);
+ostream& operator<<(ostream& os, const Employee& emp) {
+    os << *emp.id << " " << *emp.age << " " << emp.name.get();
+    return os;
 }
 
-Employee::Employee(Employee &&other) noexcept
-    : id(move(other.id)), age(move(other.age)), name(move(other.name))
-{
-}
-
-Employee &Employee::operator=(Employee &&other) noexcept
-{
-    if (this != &other)
-    {
-        id = move(other.id);
-        age = move(other.age);
-        name = move(other.name);
-    }
-    return *this;
-}
-
-void Employee::swp(Employee &other)
-{
-    Employee temp(move(*this));
-    *this = move(other);
-    other = move(temp);
-}
-
-ostream &operator<<(ostream &out, const Employee &employee)
-{
-    out << "ID: " << *(employee.id) << ", Name: " << employee.name.get() << ", Age: " << *(employee.age);
-    return out;
-}
-
-// Programmer class
-class Programmer : public Employee
-{
+// Programmer class (derived from Employee)
+class Programmer : public Employee {
 private:
-    unique_ptr<string[]> tasks;
-    unique_ptr<int> taskCount;
+    vector<string> tasks; // Vector for tasks (no need for dynamic memory management)
 
 public:
-    Programmer(int v_id, int v_age, const char *v_name, string *v_tasks, int v_taskCount);
-    Programmer(Programmer &&other) noexcept;
-    Programmer &operator=(Programmer &&other) noexcept;
-    ~Programmer() = default;
-    void swp(Employee &other) override;
-    friend ostream &operator<<(ostream &out, const Programmer &programmer);
+    // Constructor
+    Programmer(int id, int age, const char* name, int taskCount, const string* tasksArray)
+        : Employee(id, age, name) {
+        // Ensure capacity for the tasks vector and add each task
+        tasks.reserve(taskCount);
+        for (int i = 0; i < taskCount; ++i) {
+            tasks.push_back(tasksArray[i]);  // Populate tasks vector
+        }
+    }
+
+    // Move Constructor
+    Programmer(Programmer&& other) noexcept
+        : Employee(std::move(other)), tasks(std::move(other.tasks)) {}
+
+    // Move Assignment Operator
+    Programmer& operator=(Programmer&& other) noexcept {
+        if (this != &other) {
+            Employee::operator=(std::move(other));
+            tasks = std::move(other.tasks);
+        }
+        return *this;
+    }
+
+    // Swap function using Move Constructor
+    void swap(Programmer& other) {
+        Programmer temp(std::move(other)); // Move other into temp
+        other = std::move(*this);          // Move this into other
+        *this = std::move(temp);           // Move temp back into this
+    }
+
+    // Overload << operator to display Programmer details
+    friend ostream& operator<<(ostream& os, const Programmer& prog);
 };
 
-Programmer::Programmer(int v_id, int v_age, const char *v_name, string *v_tasks, int v_taskCount)
-    : Employee(v_id, v_age, v_name)
-{
-    taskCount = make_unique<int>(v_taskCount);
-    tasks = make_unique<string[]>(v_taskCount);
-    for (int i = 0; i < v_taskCount; i++)
-    {
-        tasks[i] = v_tasks[i];
+ostream& operator<<(ostream& os, const Programmer& prog) {
+    os << static_cast<const Employee&>(prog) << " | Tasks: ";
+    
+    if (prog.tasks.empty()) {
+        os << "No tasks available.";  // Debugging: Add check for empty task vector
+    } else {
+        for (size_t i = 0; i < prog.tasks.size(); ++i) {
+            os << prog.tasks[i] << (i < prog.tasks.size() - 1 ? ", " : "");
+        }
     }
+
+    return os;
 }
 
-Programmer::Programmer(Programmer &&other) noexcept
-    : Employee(move(other)), tasks(move(other.tasks)), taskCount(move(other.taskCount))
-{
-}
+int main() {
+    // Creating Employee and Programmer objects
+    const string tasks1[] = {"Code", "Debug", "Test"};
+    Programmer p1(101, 30, "Alice", 3, tasks1);
 
-Programmer &Programmer::operator=(Programmer &&other) noexcept
-{
-    if (this != &other)
-    {
-        Employee::operator=(move(other));
-        tasks = move(other.tasks);
-        taskCount = move(other.taskCount);
-    }
-    return *this;
-}
+    const string tasks2[] = {"Design", "Develop", "Deploy"};
+    Programmer p2(102, 28, "Bob", 3, tasks2);
 
-void Programmer::swp(Employee &other)
-{
-    if (Programmer *pOther = dynamic_cast<Programmer *>(&other))
-    {
-        Programmer temp(move(*this));
-        *this = move(*pOther);
-        *pOther = move(temp);
-    }
-    else
-    {
-        throw runtime_error("Incompatible types for swapping.");
-    }
-}
+    const string tasks3[] = {"Research", "Implement", "Test"};
+    unique_ptr<Employee> empPtr = make_unique<Programmer>(103, 35, "Charlie", 3, tasks3);
 
-ostream &operator<<(ostream &out, const Programmer &programmer)
-{
-    out << static_cast<const Employee &>(programmer);
-    out << ", Task Count: " << *(programmer.taskCount) << ", Tasks: [";
-    for (int i = 0; i < *(programmer.taskCount); i++)
-    {
-        out << programmer.tasks[i];
-        if (i < *(programmer.taskCount) - 1)
-            out << ", ";
-    }
-    out << "]";
-    return out;
-}
+    // Display initial Employee details
+    cout << "Before swapping:" << endl;
+    cout << p1 << endl; // Output: 101 30 Alice | Tasks: Code, Debug, Test
+    cout << p2 << endl; // Output: 102 28 Bob | Tasks: Design, Develop, Deploy
 
-// Test the code
-int main()
-{
-    string tasks1[] = {"Code", "Debug", "Test"};
-    unique_ptr<Employee> p1 = make_unique<Programmer>(101, 22, "Athira", tasks1, 3);
+    // Swapping Employee objects
+    p1.swap(p2);
 
-    string tasks2[] = {"Design", "Implement"};
-    unique_ptr<Employee> p2 = make_unique<Programmer>(102, 23, "Bhagya", tasks2, 2);
+    // Display Employee details after swapping
+    cout << "After swapping:" << endl;
+    cout << p1 << endl; // Output: 102 28 Bob | Tasks: Design, Develop, Deploy
+    cout << p2 << endl; // Output: 101 30 Alice | Tasks: Code, Debug, Test
 
-    cout << "Before Swap:" << endl;
-    cout << *p1 << endl;
-    cout << *p2 << endl;
-
-    try
-    {
-        p1->swp(*p2);
-    }
-    catch (const runtime_error &e)
-    {
-        cerr << "Error: " << e.what() << endl;
-    }
-
-    cout << "\nAfter Swap:" << endl;
-    cout << *p1 << endl;
-    cout << *p2 << endl;
+    // Display Dynamic Programmer assigned to Employee pointer
+    cout << "Dynamic Programmer assigned to Employee pointer:" << endl;
+    cout << *empPtr << endl; // Output: 103 35 Charlie | Tasks: Research, Implement, Test
 
     return 0;
 }
