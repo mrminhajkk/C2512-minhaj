@@ -130,9 +130,14 @@ int main() {
     cout << p1 << endl; // Output: 102 28 Bob | Tasks: Design, Develop, Deploy
     cout << p2 << endl; // Output: 101 30 Alice | Tasks: Code, Debug, Test
 
-    // Display Dynamic Programmer assigned to Employee pointer
+    // Add the dynamic cast here
     cout << "Dynamic Programmer assigned to Employee pointer:" << endl;
-    cout << *empPtr << endl; // Output: 103 35 Charlie | Tasks: Research, Implement, Test
+    Programmer* progPtr = dynamic_cast<Programmer*>(empPtr.get());
+    if (progPtr) {
+        cout << *progPtr << endl; // This will now call the Programmer's operator<<
+    } else {
+        cout << "Not a Programmer!" << endl;
+    }
 
     return 0;
 }
