@@ -386,3 +386,118 @@ int main() {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+class ParkingLot {
+private:
+    std::vector<ParkingSpot> spots;
+
+public:
+    ParkingLot(int numSpots) {
+        for (int i = 1; i <= numSpots; ++i) {
+            spots.emplace_back(i);
+        }
+    }
+
+    void displayAvailableSpots() {
+        std::cout << "Available Spots:\n";
+        for (const auto& spot : spots) {
+            if (spot.isAvailable()) {
+                spot.displaySpot();
+            }
+        }
+    }
+
+    void reserveSpot() {
+        std::cout << "Enter Vehicle Number: ";
+        std::string vehicleNum;
+        std::cin >> vehicleNum;
+
+        for (auto& spot : spots) {
+            if (spot.isAvailable()) {
+                if (spot.reserveSpot(vehicleNum)) {
+                    std::cout << "Spot " << spot.getID() << " reserved successfully!\n";
+                    return;
+                }
+            }
+        }
+        std::cout << "No available spots!\n";
+    }
+
+    void releaseSpot() {
+        std::cout << "Enter Spot ID to release: ";
+        int spotID;
+        std::cin >> spotID;
+
+        for (auto& spot : spots) {
+            if (spot.getID() == spotID && !spot.isAvailable()) {
+                double charges = spot.releaseSpot();
+                std::cout << "Spot " << spotID << " released. Charges: $" << charges << "\n";
+                saveReleaseDetails(spotID, charges);
+                return;
+            }
+        }
+        std::cout << "Invalid Spot ID or Spot is already available!\n";
+    }
+
+    void saveDataToFile(const std::string& filename) {
+        std::ofstream outFile(filename);
+        if (outFile.is_open()) {
+            for (const auto& spot : spots) {
+                outFile << spot.getID() << " "
+                        << (spot.isAvailable() ? 1 : 0) << " "
+                        << (spot.isAvailable() ? "None" : spot.getVehicleNumber()) << "\n";
+            }
+            outFile.close();
+        } else {
+            std::cerr << "Error: Unable to open file for saving data.\n";
+        }
+    }
+
+    void loadDataFromFile(const std::string& filename) {
+        std::ifstream inFile(filename);
+        if (inFile.is_open()) {
+            int id, isOccupied;
+            std::string vehicleNum;
+
+            while (inFile >> id >> isOccupied >> vehicleNum) {
+                spots[id - 1] = ParkingSpot(id);
+                if (!isOccupied) {
+                    spots[id - 1].reserveSpot(vehicleNum);
+                }
+            }
+            inFile.close();
+        } else {
+            std::cerr << "Error: Unable to open file for loading data.\n";
+        }
+    }
+
+    void saveReleaseDetails(int spotID, double charges) {
+        std::ofstream outFile("parking_history.txt", std::ios::app);
+        if (outFile.is_open()) {
+            for (const auto& spot : spots) {
+                if (spot.getID() == spotID) {
+                    outFile << "Spot ID: " << spotID
+                            << " | Vehicle: " << spot.getVehicleNumber()
+                            << " | Parking Time: " << spot.getParkingTime()
+                            << " | Release Time: " << spot.getReleaseTime()
+                            << " | Charges: $" << charges << "\n";
+                }
+            }
+            outFile.close();
+        } else {
+            std::cerr << "Error: Unable to open file for saving release details.\n";
+        }
+    }
+};
+
