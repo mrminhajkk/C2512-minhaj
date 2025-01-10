@@ -1,0 +1,113 @@
+------Smart Parking System----------
+1-User Registration:
+2-Login:
+3-Exit:
+
+User Choice: 1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--Register User--
+    Enter Name: Minhaj
+    Enter Email: minhaj123@gmail.com
+    Enter Phone number: 23254523546
+    Enter Password: *********
+Registration successful
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+User Choice: 2
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--Login User--
+    Enter Email: minhaj123@gmail.com
+    Enter Password: *********
+
+You have successfully logged in.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------------------------------------------------
+Home Page
+-----------------------------------------------------------------
+Choices
+    1-User Details 
+    2-Update profile
+    3-Registered vehicles
+    4-Register new vehicle
+    5-search parking spot
+    6-parking spot details
+    7-Go Back
+    8-Exit
+
+User Choice: 1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+--User Details--
+    Name: Minhaj
+    Email: minhaj123@gmail.com
+    Phone: 7984597846
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+User choice: 2
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+--Update profile--
+    Enter name: Vinayak
+    Email: vinayak57@gmail.com
+    Phone: 645789895
+
+ User choice: 4
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
+--Register new vehicle--
+    Enter vehicle name: Honda civic
+    Enter vehicle model:sedan
+    Enter vehicle number: ac123
+
+Vehicle registered successfully
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+User choice: 5
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--Search parking spot--
+Enter parking spot ID: P001
+
+Parking spot Details:
+Spot ID: P001
+Charge: Rs 10/hr
+Status: Available
+
+Choices:
+    1-Reserve Spot
+    2-Release the spot
+    3-Go Back
+
+User choice: 1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--Enter vehicle deatils to reserve the spot--
+Enter vehicle name: Honda civic
+Enter vehicle model:sedan
+Enter vehicle number: ac123 
+
+Spot reserved successfully
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+User choice: 6
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Parking spot details
+
+spot 1: ID: P001
+        Charges: 10/hr
+        Status: Reserved
+spot 2: ID: P002
+        Charges: 15/hr
+        Status: Occupied
+spot 3: ID: P003
+        Charges: 20/hr
+        Status: Available
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+User choice: 7
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Returning to login page...
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+User choice: 8
+
+Exiting the system...
