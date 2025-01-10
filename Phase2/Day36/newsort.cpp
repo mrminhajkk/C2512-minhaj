@@ -2,9 +2,8 @@
 #include <unistd.h>
 #include <cstring>
 #include <string>
-#include <sstream>
-#include <cstdlib>
 #include <vector>
+#include <cstdlib>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -65,27 +64,27 @@ void server(int port) {
 void serveClient(int& client_socket_fd) {
     char buffer[BUFFER_SIZE];
     int size;
+
     // Receive the size of the array
-    read(client_socket_fd, buffer, BUFFER_SIZE);
-    memcpy((void*)&size , (void*)buffer , sizeof(int));
+    read(client_socket_fd, buffer, sizeof(int));
+    memcpy(&size, buffer, sizeof(int));
 
     // Receive the array
     std::vector<double> arr(size);
-    memcpy((void*)&arr , (void*)buffer , size * sizeof(double));
+    read(client_socket_fd, buffer, size * sizeof(double));
+    memcpy(arr.data(), buffer, size * sizeof(double));
 
     // Sort the array
     bubbleSort(arr);
 
     // Send the sorted array back
-        memcpy((void*)buffer , (void*)&arr , size* sizeof(double));
-        write(client_socket_fd, buffer, BUFFER_SIZE);
-    
+    memcpy(buffer, arr.data(), size * sizeof(double));
+    write(client_socket_fd, buffer, size * sizeof(double));
 
-    std::cout << "Sorted array : ";
+    std::cout << "Sorted array: ";
     for (const auto& num : arr) {
         std::cout << num << " ";
     }
-
     std::cout << "\nSorted array sent to client." << std::endl;
 
     // Close client socket
@@ -131,32 +130,28 @@ void requestServer(int& client_socket_fd) {
     std::cin >> size;
 
     std::vector<double> arr(size);
-    
     for (int i = 0; i < size; ++i) {
-        std::cout << "Enter the element " << i + 1 << ": ";
+        std::cout << "Enter element " << i + 1 << ": ";
         std::cin >> arr[i];
     }
 
     // Send the size of the array
-    memcpy((void*)buffer , (void*)&size , sizeof(int));
-    write(client_socket_fd, buffer, BUFFER_SIZE);
+    memcpy(buffer, &size, sizeof(int));
+    write(client_socket_fd, buffer, sizeof(int));
 
     // Send the array
-        memcpy((void*)buffer , (void*)&arr , sizeof(double) * size);
-        write(client_socket_fd, buffer, BUFFER_SIZE);
-    
+    memcpy(buffer, arr.data(), size * sizeof(double));
+    write(client_socket_fd, buffer, size * sizeof(double));
 
     // Receive the sorted array
-    std::cout << "Sorted array received from server: ";
+    read(client_socket_fd, buffer, size * sizeof(double));
+    memcpy(arr.data(), buffer, size * sizeof(double));
 
-        read(client_socket_fd, buffer, BUFFER_SIZE);
-        memcpy((void*)&arr , (void*)buffer , size * sizeof(double));
-    
-    std::cout << "Sorted array : ";
+    // Print the sorted array
+    std::cout << "Sorted array received from server: ";
     for (const auto& num : arr) {
         std::cout << num << " ";
     }
-
     std::cout << std::endl;
 }
 
