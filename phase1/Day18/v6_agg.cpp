@@ -319,3 +319,4 @@ int VaccinationAggregator::findSecondMax(VaccinationManager& manager) {
     }
     return secondMaxIndex;
 }
+
