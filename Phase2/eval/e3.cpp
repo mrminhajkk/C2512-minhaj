@@ -1,141 +1,111 @@
 #include <iostream>
 #include <vector>
-#include <climits>
 #include <unistd.h>
+#include <sys/wait.h>
+#include <cstring>
+#include <string>
 
 using namespace std;
 
 class Vaccination {
-    private:
-        string VaccinationId;
-        int DoseAdministered;
-    public:
-        Vaccination(string id, int dose) : VaccinationId(id), DoseAdministered(dose) {}
+private:
+    string VaccinationId;
+    int DoseAdministered;
+public:
+    Vaccination(string id, int dose) : VaccinationId(id), DoseAdministered(dose) {}
 
-        string getVaccinationId() const {
-            return VaccinationId;
-        }
-
-        int getDoseAdministered()  {
-            return DoseAdministered;
-        }
+    string getVaccinationId() const { return VaccinationId; }
+    int getDoseAdministered() const { return DoseAdministered; }
 };
 
+void client(int write_to_server, int read_from_server) {
+    vector<Vaccination> vacc = {
+        Vaccination("P001", 4), 
+        Vaccination("P002", 5), 
+        Vaccination("P003", 6), 
+        Vaccination("P004", 15), 
+        Vaccination("P005", 1)
+    };
 
-//     int findsum(const vector<Vaccination>& vacc) {
-//     int sum = 0;
-//     for (const auto& each : vacc) {
-//         sum += each.getDoseAdministered();
-//     }
-//     return sum;
-// }
-
-// void find_min_in_firsthalf(const vector<Vaccination>& vacc, int& min) {
-//     min = INT_MAX;
-//     for (int i = 0; i < vacc.size() / 2; ++i) {
-//         if (vacc[i].getDoseAdministered() < min) {
-//             min = vacc[i].getDoseAdministered();
-//         }
-//     }
-// }
-
-// void find_max_in_secondhalf(const vector<Vaccination>& vacc, int& max) {
-//     max = INT_MIN;
-//     for (int i = vacc.size() / 2; i < vacc.size(); ++i) {
-//         if (vacc[i].getDoseAdministered() > max) {
-//             max = vacc[i].getDoseAdministered();
-//         }
-//     }
-// }
-
-void client(int& read_client, int& write_to_server){
+    int size = vacc.size();
     int arr[100];
-    int buffer[100];
-    vector<Vaccination> vacc = { Vaccination("P001", 4), Vaccination("P002", 5), Vaccination("P003", 6), Vaccination("P004", 15), Vaccination("P005", 1) };
-    
-        for (int i = 0; i < vacc.size(); ++i) {
-      arr[i]=vacc[i].getDoseAdministered();
-        }
-        for(int i=0;i<5;i++){
-    write(write_to_server,(void*)&arr[i],sizeof(arr));
+
+    // Filling the array with dose data
+    for (int i = 0; i < size; ++i) {
+        arr[i] = vacc[i].getDoseAdministered();
+    }
+
+    cout << "Client sending doses: ";
+    for (int i = 0; i < size; ++i) {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+
+    // Send data to server
+    write(write_to_server, &size, sizeof(size));
+    write(write_to_server, arr, sizeof(int) * size);
+
+    // Read result from server
+    int sum;
+    read(read_from_server, &sum, sizeof(sum));
+    cout << "Client received sum from server: " << sum << endl;
+
     close(write_to_server);
-        }
-    }
-        read(read_client,(void*)&buffer,sizeof(buffer));
-        cout << *buffer ;
-
-
-void server(int& read_server, int& write_to_client){
-    int buffer[100];
-    int a;
-    read(read_server,(void*)&buffer,sizeof(buffer));
-    
-    //  for(int i=0;i<5;i++)
-    //     {
-    //         sum = sum + arr[i];
-    //     }
-    //     close(rea
-    int sum=0;
-    
-        for(int i=0;i<sizeof(buffer);i++)
-        {
-            sum = sum + buffer[i];
-        }
-        close(read_server);
-        write(write_to_client,(void*)&sum,sizeof(int));
-        
-
-
-
+    close(read_from_server);
 }
+
+void server(int read_from_client, int write_to_client) {
+    int buffer[100];
+    int size;
+    int sum = 0;
+
+    // Read size and data from client
+    read(read_from_client, &size, sizeof(size));
+    read(read_from_client, buffer, sizeof(int) * size);
+
+    cout << "Server received doses: ";
+    for (int i = 0; i < size; ++i) {
+        cout << buffer[i] << " ";
+        sum += buffer[i];
+    }
+    cout << endl;
+
+    cout << "Server calculated sum: " << sum << endl;
+
+    // Send sum back to client
+    write(write_to_client, &sum, sizeof(sum));
+
+    close(read_from_client);
+    close(write_to_client);
+}
+
 int main() {
+    int pipe_client_to_server[2];
+    int pipe_server_to_client[2];
 
-    int pipe_fd1[2];
-    if(pipe(pipe_fd1)==-1){
-        perror("Pipe");
-        cout << "Pipe not created" << endl ;
+    // Create pipes
+    if (pipe(pipe_client_to_server) == -1 || pipe(pipe_server_to_client) == -1) {
+        perror("Pipe creation failed");
+        return 1;
     }
 
-    int &read_server = pipe_fd1[0];
-    int &write_to_client = pipe_fd1[1];
-
-        int pipe_fd2[2];
-    if(pipe(pipe_fd2)==-1){
-        perror("Pipe");
-        cout << "Pipe not created" << endl ;
+    pid_t pid = fork();
+    if (pid == -1) {
+        perror("Fork failed");
+        return 1;
     }
 
-    int &read_client = pipe_fd2[0];
-    int &write_to_server = pipe_fd2[1];
-
-    int pid = -1;
-
-    {
-        pid = fork();
-        if(0 == pid){
-            client(read_client,write_to_server);
-        }
+    if (pid == 0) {  // Child process (Client)
+        close(pipe_client_to_server[0]);
+        close(pipe_server_to_client[1]);
+        client(pipe_client_to_server[1], pipe_server_to_client[0]);
+        exit(0);
+    } else {  // Parent process (Server)
+        close(pipe_client_to_server[1]);
+        close(pipe_server_to_client[0]);
+        server(pipe_client_to_server[0], pipe_server_to_client[1]);
+        wait(nullptr);  // Wait for child process
     }
-
-
-    {
-        pid = fork();
-        if(0==pid){
-            server(read_server,write_to_client);
-        }
-    }
-    // vector<Vaccination> vacc = { Vaccination("P001", 11), Vaccination("P002", 5), Vaccination("P003", 6), Vaccination("P004", 15), Vaccination("P005", 1) };
-    
-    // int sum = findsum(vacc);
-    // cout << "The sum is " << sum << endl;
-
-    // int min;
-    // find_min_in_firsthalf(vacc, min);
-    // cout << "The min in first half is " << min << endl;
-
-    // int max;
-    // find_max_in_secondhalf(vacc, max);
-    // cout << "The max in second half is " << max << endl;
 
     return 0;
 }
