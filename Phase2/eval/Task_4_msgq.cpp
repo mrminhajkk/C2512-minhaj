@@ -82,17 +82,22 @@ int main() {
         perror("Message queue creation failed");
         return 1;
     }
-
-    if (fork() == 0) {
-        client(msgid);
-        return 0;
+    {
+        int pid = fork();
+        if (pid == 0)
+        if (fork() == 0) {
+            client(msgid);
+            return 0;
+        }
     }
-
-    if (fork() == 0) {
-        server(msgid);
-        return 0;
+    
+    {
+        int pid = fork();
+        if (pid == 0) {
+            server(msgid);
+            return 0;
+        }
     }
-
     wait(nullptr);
     wait(nullptr);
 
