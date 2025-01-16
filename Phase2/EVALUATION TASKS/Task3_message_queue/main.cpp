@@ -84,8 +84,7 @@ int main() {
     }
     {
         int pid = fork();
-        if (pid == 0)
-        if (fork() == 0) {
+        if (pid == 0) {
             client(msgid);
             return 0;
         }
