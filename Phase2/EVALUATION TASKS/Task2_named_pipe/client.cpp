@@ -8,12 +8,12 @@
 
 using namespace std;
 
-class VaccinationRecord{
+class Vaccination{
 	private:
 		string vaccinationId;
 		int dosesAdministered;
 	public:
-		VaccinationRecord(string vaccinationId, int dosesAdministered){
+		Vaccination(string vaccinationId, int dosesAdministered){
 			this -> vaccinationId = vaccinationId;
 			this -> dosesAdministered = dosesAdministered;
 		}
@@ -23,7 +23,7 @@ class VaccinationRecord{
 };
 
 int main(){
-	vector<VaccinationRecord> vaccinations;
+	vector<Vaccination> vaccinations;
 	vaccinations.emplace_back("ID001", 3);
 	vaccinations.emplace_back("ID002", 2);
 	vaccinations.emplace_back("ID003", 1);
