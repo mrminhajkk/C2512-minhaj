@@ -1,6 +1,7 @@
-75. Operator overloading
-Operator overloading allows us to define custom behavior for operators. 
-This enables user-defined types to be manipulated using the operators like how built-in types are manipulated.
+75. Operator Overloading
+-------------------------
+Operator overloading allows us to define custom behavior for operators. This enables user-defined types to be manipulated using the operators like how built-in types are manipulated.
+
 Example of operator overloading:
 
 #include <iostream>
@@ -24,8 +25,15 @@ int main() {
     return 0;
 }
 
+Explanation: The operator `+` is overloaded for the `Complex` class, so when two `Complex` objects are added together, their `real` and `imag` parts are added respectively.
+
+====================================================================================================================================
+
 76. Create a class Student and an array of objects
+--------------------------------------------------
 In this example, we create a `Student` class and an array of objects to store multiple student data.
+
+Example:
 
 #include <iostream>
 using namespace std;
@@ -49,13 +57,23 @@ int main() {
     }
     return 0;
 }
+
+Explanation: Here we have a `Student` class with a constructor to initialize `name` and `age`. We create an array of `Student` objects and display their details using the `display()` function.
+
 ====================================================================================================================================
+
 77. Operator Overloading (using + to add two objects)
-Already covered in the first answer.
+-------------------------------------------------------
+Already covered in question 75.
+
+====================================================================================================================================
 
 78. Difference Between Static and Const
+----------------------------------------
 Static: A static variable retains its value between function calls and is initialized only once.
 Const: A constant variable cannot be modified once initialized.
+
+Example:
 
 #include <iostream>
 using namespace std;
@@ -70,7 +88,12 @@ public:
 
 int Example::count = 0;
 
+Explanation: `static` variables retain their value between function calls, whereas `const` variables cannot be modified after initialization.
+
+====================================================================================================================================
+
 79. What is a Template? Difference Between Executable with Template and Normal Function
+-----------------------------------------------------------------------------------------
 A template is a feature in C++ that allows writing generic functions or classes to handle any data type.
 
 Example of template usage:
@@ -86,9 +109,12 @@ int main() {
     return 0;
 }
 
-Difference: When templates are used, the compiler generates a function for each specific data type. Without templates, separate functions would be needed for each type.
+Explanation: Templates allow you to write code that works for any data type without duplicating the function. The compiler generates a specific version for each type you use. Without templates, you'd need to write separate functions for each data type.
+
+====================================================================================================================================
 
 80. What is Function Pointer?
+------------------------------
 A function pointer is a pointer that stores the address of a function. This can be used to call functions dynamically.
 
 Example of function pointer:
@@ -106,7 +132,12 @@ int main() {
     return 0;
 }
 
+Explanation: A function pointer is used to store the address of the function `greet`. The pointer is then called to invoke the function.
+
+====================================================================================================================================
+
 81. Create a Default Constructor
+----------------------------------
 A default constructor is a constructor that takes no parameters.
 
 Example:
@@ -121,7 +152,12 @@ int main() {
     return 0;
 }
 
+Explanation: A default constructor is invoked when an object is created without any arguments. It initializes the object with default values.
+
+====================================================================================================================================
+
 82. Parameterized Constructor
+------------------------------
 A parameterized constructor is a constructor that accepts arguments.
 
 Example:
@@ -137,7 +173,12 @@ int main() {
     return 0;
 }
 
+Explanation: A parameterized constructor allows us to initialize the object with specific values provided at the time of creation.
+
+====================================================================================================================================
+
 83. Copy Constructor for the Same
+-----------------------------------
 A copy constructor is used to create a new object as a copy of an existing object.
 
 Example:
@@ -155,7 +196,12 @@ int main() {
     return 0;
 }
 
+Explanation: The copy constructor is used when an object is copied to another object of the same type. It allows us to copy the values of one object to another.
+
+====================================================================================================================================
+
 84. Operator Overloading (- and +)
+------------------------------------
 Operator overloading allows defining the behavior of the `-` and `+` operators for user-defined types.
 
 Example:
@@ -183,7 +229,12 @@ int main() {
     return 0;
 }
 
+Explanation: The `+` and `-` operators are overloaded in the `Complex` class, allowing us to add and subtract two `Complex` numbers.
+
+====================================================================================================================================
+
 85. Call by Value and Call by Reference
+----------------------------------------
 Call by Value: A copy of the actual parameter is passed to the function.
 Call by Reference: The address of the actual parameter is passed to the function.
 
@@ -192,7 +243,12 @@ Example:
 void byValue(int a) { a = 10; } // Call by value
 void byReference(int &a) { a = 10; } // Call by reference
 
+Explanation: In call by value, a copy of the variable is passed, so any changes to it do not affect the original variable. In call by reference, the original variable is passed by address, and changes will affect the original.
+
+====================================================================================================================================
+
 86. Find the Output Questions of Pointers
+-----------------------------------------
 Pointers are variables that store memory addresses.
 
 Example:
@@ -201,7 +257,12 @@ int a = 5;
 int *ptr = &a;
 cout << *ptr; // Outputs 5
 
+Explanation: A pointer stores the address of a variable. Dereferencing the pointer (`*ptr`) accesses the value at that memory address.
+
+====================================================================================================================================
+
 87. Inheritance Questions
+--------------------------
 Inheritance allows a class to inherit the properties and methods of another class.
 
 Example:
@@ -222,7 +283,12 @@ int main() {
     return 0;
 }
 
+Explanation: Inheritance allows the `Dog` class to inherit the `sound()` method from the `Animal` class and override it to produce a different behavior.
+
+====================================================================================================================================
+
 88. Function Override Code
+---------------------------
 Function overriding occurs when a derived class provides a specific implementation of a function that is already provided by its base class.
 
 Example:
@@ -243,22 +309,39 @@ int main() {
     return 0;
 }
 
+Explanation: The `show()` function is overridden in the `Derived` class, and the virtual function mechanism ensures that the `Derived` version is called.
+
+====================================================================================================================================
+
 89. Virtual Functions
+----------------------
 A virtual function is a member function in a base class that you expect to be overridden in derived classes.
 
+Explanation: Virtual functions enable polymorphic behavior, allowing the correct function to be called for an object, even when using a base class pointer or reference.
+
+====================================================================================================================================
+
 90. What is a Virtual Function and Add Virtual Function to Above Example
+----------------------------------------------------------------------
 Virtual functions allow derived classes to implement their own version of a function, and this version will be called based on the object type, not the pointer type.
 
-Example:
-(As provided in the answer above)
+Explanation: The `show()` function in the `Base` class is declared as virtual, allowing the overridden function in the `Derived` class to be called correctly.
+
+====================================================================================================================================
 
 91. What is Copy Constructor and Show an Example
+-------------------------------------------------
 A copy constructor is used to copy an object from another object of the same class.
 
 Example:
-(As provided above in answer 83)
+(As provided in question 83)
+
+Explanation: The copy constructor creates a new object by copying the data from another object.
+
+====================================================================================================================================
 
 92. What is STL, Write Syntax for Vector with Some Functions
+------------------------------------------------------------
 STL (Standard Template Library) provides data structures like vectors, maps, and algorithms to make code more efficient.
 
 Example with vector:
@@ -274,27 +357,260 @@ int main() {
     return 0;
 }
 
+Explanation: The `vector` is a dynamic array that can resize itself. You can use functions like `push_back()` to add elements and `size()` to get the number of elements.
+
+====================================================================================================================================
+
 93. What is Stack and Queue
+----------------------------
 A stack is a data structure that follows Last-In-First-Out (LIFO) order, and a queue follows First-In-First-Out (FIFO) order.
 
+Explanation: A stack allows data to be added and removed from the same end (top), while a queue allows data to be added at the back and removed from the front.
+
+====================================================================================================================================
+
 94. Oops Concepts with Real World Example
+-----------------------------------------
 OOPs concepts include encapsulation, inheritance, polymorphism, and abstraction. Real-life example: A vehicle class can have attributes like `speed`, `fuel`, and methods like `drive`. Different vehicles can inherit from this class and add specific behaviors.
 
+Explanation: OOP concepts are designed to model real-world entities with properties and behaviors, making code easier to maintain and reuse.
+
+====================================================================================================================================
+
 95. Implement All Types of Constructors
-Constructors include default, parameterized, and copy constructors.
-(Example of all types in answers above)
+---------------------------------------
+Ans) Constructors include default, parameterized, and copy constructors
+
+Explanation: Different constructors are used to initialize objects in different ways.
+
+====================================================================================================================================
 
 96. Demonstrate Polymorphism and Inheritance for a Given Scenario
-Polymorphism occurs when the same function behaves differently for different objects. Inheritance is when a class inherits properties from another.
+----------------------------------------------------------------
+Ans) Polymorphism occurs when the same function behaves differently for different objects. Inheritance is when a class inherits properties from another.
 
-Example:
-(As provided above in the inheritance section)
+Explanation: Inheritance allows the derived class to reuse code from the base class, and polymorphism allows different implementations for the same function.
+
+====================================================================================================================================
 
 97. Types of Inheritance
-Types of inheritance include single, multiple, hierarchical, and hybrid inheritance.
+-------------------------
+Ans) Types of inheritance include single, multiple, hierarchical, and hybrid inheritance.
+
+Types of Inheritance in C++
+
+Inheritance is one of the key features of Object-Oriented Programming (OOP). It allows a class (derived class) to inherit properties and behaviors (methods) from another class (base class). There are several types of inheritance in C++:
+
+1. Single Inheritance
+
+Single inheritance occurs when a class inherits from only one base class. This is the most basic form of inheritance where the derived class acquires the properties and methods of a single base class.
+
+Example:
+
+#include <iostream>
+using namespace std;
+
+class Animal {
+public:
+    void sound() {
+        cout << "Animal makes a sound." << endl;
+    }
+};
+
+class Dog : public Animal {
+public:
+    void bark() {
+        cout << "Dog barks." << endl;
+    }
+};
+
+int main() {
+    Dog d;
+    d.sound();  // Inherited from Animal
+    d.bark();   // Defined in Dog
+    return 0;
+}
+
+Explanation: In this example, Dog class inherits from the Animal class. The Dog class can access the sound() method from Animal and also has its own method bark().
+
+2. Multiple Inheritance
+
+Multiple inheritance occurs when a class inherits from more than one base class. This allows a derived class to inherit properties and methods from multiple base classes.
+
+Example:
+
+#include <iostream>
+using namespace std;
+
+class Animal {
+public:
+    void sound() {
+        cout << "Animal makes a sound." << endl;
+    }
+};
+
+class Bird {
+public:
+    void fly() {
+        cout << "Bird flies." << endl;
+    }
+};
+
+class Bat : public Animal, public Bird {
+public:
+    void sleep() {
+        cout << "Bat sleeps." << endl;
+    }
+};
+
+int main() {
+    Bat b;
+    b.sound();  // From Animal
+    b.fly();    // From Bird
+    b.sleep();  // Defined in Bat
+    return 0;
+}
+
+Explanation: In this example, the Bat class inherits from both Animal and Bird classes. As a result, it has access to methods from both base classes (sound() from Animal and fly() from Bird).
+
+3. Multilevel Inheritance
+
+Multilevel inheritance occurs when a class is derived from another derived class. In other words, there is a chain of inheritance where the derived class itself becomes the base class for another class.
+
+Example:
+
+#include <iostream>
+using namespace std;
+
+class Animal {
+public:
+    void sound() {
+        cout << "Animal makes a sound." << endl;
+    }
+};
+
+class Mammal : public Animal {
+public:
+    void walk() {
+        cout << "Mammal walks." << endl;
+    }
+};
+
+class Dog : public Mammal {
+public:
+    void bark() {
+        cout << "Dog barks." << endl;
+    }
+};
+
+int main() {
+    Dog d;
+    d.sound();  // From Animal
+    d.walk();   // From Mammal
+    d.bark();   // From Dog
+    return 0;
+}
+
+Explanation: In this example, the Dog class inherits from Mammal, and Mammal inherits from Animal. Thus, the Dog class has access to the methods of both Mammal and Animal.
+
+4. Hierarchical Inheritance
+
+Hierarchical inheritance occurs when multiple classes are derived from a single base class. All the derived classes share the properties and behaviors of the base class.
+
+Example:
+
+#include <iostream>
+using namespace std;
+
+class Animal {
+public:
+    void sound() {
+        cout << "Animal makes a sound." << endl;
+    }
+};
+
+class Dog : public Animal {
+public:
+    void bark() {
+        cout << "Dog barks." << endl;
+    }
+};
+
+class Cat : public Animal {
+public:
+    void meow() {
+        cout << "Cat meows." << endl;
+    }
+};
+
+int main() {
+    Dog d;
+    Cat c;
+    
+    d.sound();  // From Animal
+    d.bark();   // From Dog
+    
+    c.sound();  // From Animal
+    c.meow();   // From Cat
+    
+    return 0;
+}
+
+Explanation: Here, both the Dog and Cat classes inherit from the same Animal class. As a result, both derived classes have access to the sound() method from Animal and their own specific methods (bark() for Dog and meow() for Cat).
+
+5. Hybrid Inheritance
+
+Hybrid inheritance occurs when a combination of two or more types of inheritance is used. It can include a mix of single, multiple, multilevel, and hierarchical inheritance.
+
+Example:
+
+#include <iostream>
+using namespace std;
+
+class Animal {
+public:
+    void sound() {
+        cout << "Animal makes a sound." << endl;
+    }
+};
+
+class Bird {
+public:
+    void fly() {
+        cout << "Bird flies." << endl;
+    }
+};
+
+class Bat : public Animal, public Bird {
+public:
+    void sleep() {
+        cout << "Bat sleeps." << endl;
+    }
+};
+
+class FlyingMammal : public Bat {
+public:
+    void display() {
+        cout << "Flying Mammal." << endl;
+    }
+};
+
+int main() {
+    FlyingMammal fm;
+    fm.sound();  // From Animal
+    fm.fly();    // From Bird
+    fm.sleep();  // From Bat
+    fm.display(); // From FlyingMammal
+    return 0;
+}
+
+Explanation: This is an example of hybrid inheritance, where a class Bat inherits from both Animal and Bird, and another class FlyingMammal further inherits from Bat. This demonstrates a combination of multiple and multilevel inheritance.
+
+====================================================================================================================================
 
 98. Pointer with Example, Dynamic Memory Allocation and Object Creation
-Pointers are used to store memory addresses, dynamic memory allocation can be done using `new` and `delete`.
+----------------------------------------------------------------------
+Ans) Pointers are used to store memory addresses, dynamic memory allocation can be done using `new` and `delete`.
 
 Example:
 
@@ -302,3 +618,4 @@ int *ptr = new int(10); // Dynamically allocate memory
 cout << *ptr; // Outputs 10
 delete ptr; // Free the allocated memory
 
+Explanation: Dynamic memory allocation is used to allocate memory at runtime. Pointers store memory addresses, and the `delete` keyword is used to free the allocated memory when it is no longer needed.
