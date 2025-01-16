@@ -64,7 +64,35 @@ Explanation: Here we have a `Student` class with a constructor to initialize `na
 
 77. Operator Overloading (using + to add two objects)
 -------------------------------------------------------
-Already covered in question 75.
+Operator overloading allows you to define custom behavior for operators in a class. In Python, you can overload the + operator for adding two objects by defining the __add__ method in your class. Here's a basic example:
+Example:
+
+Let's say you have a class Vector representing a 2D vector. You want to use the + operator to add two vectors.
+
+class Vector:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    # Overloading the '+' operator
+    def __add__(self, other):
+        # Ensure the other object is also a Vector
+        if isinstance(other, Vector):
+            return Vector(self.x + other.x, self.y + other.y)
+        return NotImplemented
+    
+    def __repr__(self):
+        return f"Vector({self.x}, {self.y})"
+    
+# Creating two Vector objects
+v1 = Vector(2, 3)
+v2 = Vector(4, 5)
+
+# Adding the two vectors using the overloaded '+' operator
+result = v1 + v2
+
+# Printing the result
+print(result)  # Output: Vector(6, 8)
 
 ====================================================================================================================================
 
