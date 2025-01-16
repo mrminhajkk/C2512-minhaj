@@ -1,0 +1,304 @@
+75. Operator overloading
+Operator overloading allows us to define custom behavior for operators. This enables user-defined types to be manipulated using the operators like how built-in types are manipulated.
+
+Example of operator overloading:
+
+#include <iostream>
+using namespace std;
+
+class Complex {
+public:
+    int real, imag;
+    Complex() : real(0), imag(0) {}
+    Complex(int r, int i) : real(r), imag(i) {}
+
+    Complex operator + (Complex const &other) {
+        return Complex(real + other.real, imag + other.imag);
+    }
+};
+
+int main() {
+    Complex c1(3, 4), c2(1, 2);
+    Complex c3 = c1 + c2;  // Operator + is overloaded
+    cout << "Sum: " << c3.real << " + " << c3.imag << "i" << endl;
+    return 0;
+}
+
+76. Create a class Student and an array of objects
+In this example, we create a `Student` class and an array of objects to store multiple student data.
+
+#include <iostream>
+using namespace std;
+
+class Student {
+public:
+    string name;
+    int age;
+    
+    Student(string n, int a) : name(n), age(a) {}
+    
+    void display() {
+        cout << "Name: " << name << ", Age: " << age << endl;
+    }
+};
+
+int main() {
+    Student students[] = {Student("John", 20), Student("Alice", 22)};
+    for (int i = 0; i < 2; i++) {
+        students[i].display();
+    }
+    return 0;
+}
+
+77. Operator Overloading (using + to add two objects)
+Already covered in the first answer.
+
+78. Difference Between Static and Const
+Static: A static variable retains its value between function calls and is initialized only once.
+Const: A constant variable cannot be modified once initialized.
+
+#include <iostream>
+using namespace std;
+
+class Example {
+public:
+    static int count;  // Static variable
+    const int id;  // Constant member variable
+
+    Example(int val) : id(val) {}
+};
+
+int Example::count = 0;
+
+79. What is a Template? Difference Between Executable with Template and Normal Function
+A template is a feature in C++ that allows writing generic functions or classes to handle any data type.
+
+Example of template usage:
+
+template <typename T>
+T add(T a, T b) {
+    return a + b;
+}
+
+int main() {
+    cout << add(5, 3) << endl; // For int
+    cout << add(2.5, 3.5) << endl; // For double
+    return 0;
+}
+
+Difference: When templates are used, the compiler generates a function for each specific data type. Without templates, separate functions would be needed for each type.
+
+80. What is Function Pointer?
+A function pointer is a pointer that stores the address of a function. This can be used to call functions dynamically.
+
+Example of function pointer:
+
+#include <iostream>
+using namespace std;
+
+void greet() {
+    cout << "Hello, World!" << endl;
+}
+
+int main() {
+    void (*ptr)() = greet;
+    ptr();  // Calls greet function
+    return 0;
+}
+
+81. Create a Default Constructor
+A default constructor is a constructor that takes no parameters.
+
+Example:
+
+class MyClass {
+public:
+    MyClass() { cout << "Default Constructor Called" << endl; }
+};
+
+int main() {
+    MyClass obj; // Calls default constructor
+    return 0;
+}
+
+82. Parameterized Constructor
+A parameterized constructor is a constructor that accepts arguments.
+
+Example:
+
+class MyClass {
+public:
+    int x;
+    MyClass(int val) { x = val; cout << "Parameterized Constructor Called" << endl; }
+};
+
+int main() {
+    MyClass obj(5); // Calls parameterized constructor
+    return 0;
+}
+
+83. Copy Constructor for the Same
+A copy constructor is used to create a new object as a copy of an existing object.
+
+Example:
+
+class MyClass {
+public:
+    int x;
+    MyClass(int val) { x = val; }
+    MyClass(const MyClass &obj) { x = obj.x; } // Copy constructor
+};
+
+int main() {
+    MyClass obj1(5);
+    MyClass obj2 = obj1; // Calls copy constructor
+    return 0;
+}
+
+84. Operator Overloading (- and +)
+Operator overloading allows defining the behavior of the `-` and `+` operators for user-defined types.
+
+Example:
+
+class Complex {
+public:
+    int real, imag;
+    Complex(int r, int i) : real(r), imag(i) {}
+
+    Complex operator + (Complex const &other) {
+        return Complex(real + other.real, imag + other.imag);
+    }
+
+    Complex operator - (Complex const &other) {
+        return Complex(real - other.real, imag - other.imag);
+    }
+};
+
+int main() {
+    Complex c1(3, 4), c2(1, 2);
+    Complex c3 = c1 + c2; // +
+    Complex c4 = c1 - c2; // -
+    cout << "Sum: " << c3.real << " + " << c3.imag << "i" << endl;
+    cout << "Difference: " << c4.real << " + " << c4.imag << "i" << endl;
+    return 0;
+}
+
+85. Call by Value and Call by Reference
+Call by Value: A copy of the actual parameter is passed to the function.
+Call by Reference: The address of the actual parameter is passed to the function.
+
+Example:
+
+void byValue(int a) { a = 10; } // Call by value
+void byReference(int &a) { a = 10; } // Call by reference
+
+86. Find the Output Questions of Pointers
+Pointers are variables that store memory addresses.
+
+Example:
+
+int a = 5;
+int *ptr = &a;
+cout << *ptr; // Outputs 5
+
+87. Inheritance Questions
+Inheritance allows a class to inherit the properties and methods of another class.
+
+Example:
+
+class Animal {
+public:
+    void sound() { cout << "Animal sound"; }
+};
+
+class Dog : public Animal {
+public:
+    void sound() { cout << "Bark"; }
+};
+
+int main() {
+    Dog d;
+    d.sound(); // Bark
+    return 0;
+}
+
+88. Function Override Code
+Function overriding occurs when a derived class provides a specific implementation of a function that is already provided by its base class.
+
+Example:
+
+class Base {
+public:
+    virtual void show() { cout << "Base class show function"; }
+};
+
+class Derived : public Base {
+public:
+    void show() override { cout << "Derived class show function"; }
+};
+
+int main() {
+    Derived d;
+    d.show(); // Calls Derived's show function
+    return 0;
+}
+
+89. Virtual Functions
+A virtual function is a member function in a base class that you expect to be overridden in derived classes.
+
+90. What is a Virtual Function and Add Virtual Function to Above Example
+Virtual functions allow derived classes to implement their own version of a function, and this version will be called based on the object type, not the pointer type.
+
+Example:
+(As provided in the answer above)
+
+91. What is Copy Constructor and Show an Example
+A copy constructor is used to copy an object from another object of the same class.
+
+Example:
+(As provided above in answer 83)
+
+92. What is STL, Write Syntax for Vector with Some Functions
+STL (Standard Template Library) provides data structures like vectors, maps, and algorithms to make code more efficient.
+
+Example with vector:
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    vector<int> v = {1, 2, 3, 4};
+    v.push_back(5);
+    cout << v.size() << endl;  // Output the size
+    return 0;
+}
+
+93. What is Stack and Queue
+A stack is a data structure that follows Last-In-First-Out (LIFO) order, and a queue follows First-In-First-Out (FIFO) order.
+
+94. Oops Concepts with Real World Example
+OOPs concepts include encapsulation, inheritance, polymorphism, and abstraction. Real-life example: A vehicle class can have attributes like `speed`, `fuel`, and methods like `drive`. Different vehicles can inherit from this class and add specific behaviors.
+
+95. Implement All Types of Constructors
+Constructors include default, parameterized, and copy constructors.
+(Example of all types in answers above)
+
+96. Demonstrate Polymorphism and Inheritance for a Given Scenario
+Polymorphism occurs when the same function behaves differently for different objects. Inheritance is when a class inherits properties from another.
+
+Example:
+(As provided above in the inheritance section)
+
+97. Types of Inheritance
+Types of inheritance include single, multiple, hierarchical, and hybrid inheritance.
+
+98. Pointer with Example, Dynamic Memory Allocation and Object Creation
+Pointers are used to store memory addresses, dynamic memory allocation can be done using `new` and `delete`.
+
+Example:
+
+int *ptr = new int(10); // Dynamically allocate memory
+cout << *ptr; // Outputs 10
+delete ptr; // Free the allocated memory
+
