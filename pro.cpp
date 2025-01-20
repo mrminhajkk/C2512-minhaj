@@ -1,503 +1,352 @@
-#include<iostream>
-#include<vector>
-#include<iomanip>
-#include<chrono>
-#include<fstream>
-#include<string>
-
-using namespace std;
-
-class ParkingSpot {
-private:
-    int spotID;
-    bool isOccupied;
-    std::string vehicleNumber;
-    std::chrono::time_point<std::chrono::steady_clock> startTime;
-
-public:
-    ParkingSpot(int id) : spotID(id), isOccupied(false), vehicleNumber("") {}
-
-    bool reserveSpot(const std::string& vehicleNum) {
-        if (!isOccupied) {
-            isOccupied = true;
-            vehicleNumber = vehicleNum;
-            startTime = std::chrono::steady_clock::now();
-            return true;
-        }
-        return false;
-    }
-
-    bool releaseSpot() {
-        if (isOccupied) {
-            isOccupied = false;
-            vehicleNumber = "";
-            return true;
-        }
-        return false;
-    }
-
-    double calculateCharges() {
-        auto endTime = std::chrono::steady_clock::now();
-        auto duration = std::chrono::duration_cast<std::chrono::hours>(endTime - startTime).count();
-        return (duration > 0 ? duration : 1) * 5.0; // $5/hour
-    }
-
-    bool isAvailable() const {
-        return !isOccupied;
-    }
-
-    int getID() const {
-        return spotID;
-    }
-
-    std::string getVehicleNumber() const {
-        return vehicleNumber;
-    }
-
-    void displaySpot() const {
-        std::cout << "Spot ID: " << spotID
-                  << " | Status: " << (isOccupied ? "Occupied" : "Available")
-                  << " | Vehicle: " << (isOccupied ? vehicleNumber : "None") << "\n";
-    }
-};
-
-class ParkingLot {
-private:
-    std::vector<ParkingSpot> spots;
-
-public:
-    ParkingLot(int numSpots) {
-        for (int i = 1; i <= numSpots; ++i) {
-            spots.emplace_back(i);
-        }
-    }
-
-    void displayAvailableSpots() {
-        std::cout << "Available Spots:\n";
-        for (const auto& spot : spots) {
-            if (spot.isAvailable()) {
-                spot.displaySpot();
-            }
-        }
-    }
-
-    void reserveSpot() {
-        std::cout << "Enter Vehicle Number: ";
-        std::string vehicleNum;
-        std::cin >> vehicleNum;
-
-        for (auto& spot : spots) {
-            if (spot.isAvailable()) {
-                if (spot.reserveSpot(vehicleNum)) {
-                    std::cout << "Spot " << spot.getID() << " reserved successfully!\n";
-                    return;
-                }
-            }
-        }
-        std::cout << "No available spots!\n";
-    }
-
-    void releaseSpot() {
-        std::cout << "Enter Spot ID to release: ";
-        int spotID;
-        std::cin >> spotID;
-
-        for (auto& spot : spots) {
-            if (spot.getID() == spotID && !spot.isAvailable()) {
-                double charges = spot.calculateCharges();
-                spot.releaseSpot();
-                std::cout << "Spot " << spotID << " released. Charges: $" << charges << "\n";
-                return;
-            }
-        }
-        std::cout << "Invalid Spot ID or Spot is already available!\n";
-    }
-
-    void saveDataToFile(const std::string& filename) {
-        std::ofstream outFile(filename);
-        if (outFile.is_open()) {
-            for (const auto& spot : spots) {
-                outFile << spot.getID() << " " << spot.isAvailable() << " " << spot.getVehicleNumber() << "\n";
-            }
-            outFile.close();
-        }
-    }
-
-    void loadDataFromFile(const std::string& filename) {
-        std::ifstream inFile(filename);
-        if (inFile.is_open()) {
-            int id;
-            bool isOccupied;
-            std::string vehicleNum;
-
-            while (inFile >> id >> isOccupied >> vehicleNum) {
-                spots[id - 1] = ParkingSpot(id);
-                if (!isOccupied) {
-                    spots[id - 1].reserveSpot(vehicleNum);
-                }
-            }
-            inFile.close();
-        }
-    }
-};
-
-
-
-void displayMenu() {
-    std::cout << "\nSmart Parking System\n";
-    std::cout << "1. View Available Parking Spots\n";
-    std::cout << "2. Reserve a Parking Spot\n";
-    std::cout << "3. Release a Parking Spot\n";
-    std::cout << "4. Exit\n";
-    std::cout << "Enter your choice: ";
-}
-
-int main() {
-    ParkingLot lot(10); // Initialize with 10 spots
-    lot.loadDataFromFile("parking_lot_data.txt");
-
-    int choice;
-    do {
-        displayMenu();
-        std::cin >> choice;
-
-        switch (choice) {
-        case 1:
-            lot.displayAvailableSpots();
-            break;
-        case 2:
-            lot.reserveSpot();
-            break;
-        case 3:
-            lot.releaseSpot();
-            break;
-        case 4:
-            lot.saveDataToFile("parking_lot_data.txt");
-            std::cout << "Data saved. Exiting...\n";
-            break;
-        default:
-            std::cout << "Invalid choice. Try again.\n";
-        }
-    } while (choice != 4);
-
-    return 0;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-class ParkingSpot {
-private:
-    int spotID;
-    bool isOccupied;
-    std::string vehicleNumber;
-    std::chrono::time_point<std::chrono::steady_clock> startTime;
-    std::string parkingTime;
-    std::string releaseTime;
-
-    // Convert time_point to string
-    std::string getCurrentTime() const {
-        auto now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-        return std::ctime(&now);
-    }
-
-public:
-    ParkingSpot(int id) : spotID(id), isOccupied(false), vehicleNumber("") {}
-
-    bool reserveSpot(const std::string& vehicleNum) {
-        if (!isOccupied) {
-            isOccupied = true;
-            vehicleNumber = vehicleNum;
-            startTime = std::chrono::steady_clock::now();
-            parkingTime = getCurrentTime();
-            return true;
-        }
-        return false;
-    }
-
-    double releaseSpot() {
-        if (isOccupied) {
-            isOccupied = false;
-            releaseTime = getCurrentTime();
-            auto endTime = std::chrono::steady_clock::now();
-            auto duration = std::chrono::duration_cast<std::chrono::hours>(endTime - startTime).count();
-            double charges = (duration > 0 ? duration : 1) * 5.0; // $5/hour
-            vehicleNumber = "";
-            return charges;
-        }
-        return 0.0;
-    }
-
-    bool isAvailable() const {
-        return !isOccupied;
-    }
-
-    int getID() const {
-        return spotID;
-    }
-
-    std::string getVehicleNumber() const {
-        return vehicleNumber;
-    }
-
-    std::string getParkingTime() const {
-        return parkingTime;
-    }
-
-    std::string getReleaseTime() const {
-        return releaseTime;
-    }
-
-    void displaySpot() const {
-        std::cout << "Spot ID: " << spotID
-                  << " | Status: " << (isOccupied ? "Occupied" : "Available")
-                  << " | Vehicle: " << (isOccupied ? vehicleNumber : "None") << "\n";
-    }
-};
-
-
-class ParkingLot {
-private:
-    std::vector<ParkingSpot> spots;
-
-public:
-    ParkingLot(int numSpots) {
-        for (int i = 1; i <= numSpots; ++i) {
-            spots.emplace_back(i);
-        }
-    }
-
-    void displayAvailableSpots() {
-        std::cout << "Available Spots:\n";
-        for (const auto& spot : spots) {
-            if (spot.isAvailable()) {
-                spot.displaySpot();
-            }
-        }
-    }
-
-    void reserveSpot() {
-        std::cout << "Enter Vehicle Number: ";
-        std::string vehicleNum;
-        std::cin >> vehicleNum;
-
-        for (auto& spot : spots) {
-            if (spot.isAvailable()) {
-                if (spot.reserveSpot(vehicleNum)) {
-                    std::cout << "Spot " << spot.getID() << " reserved successfully!\n";
-                    return;
-                }
-            }
-        }
-        std::cout << "No available spots!\n";
-    }
-
-    void releaseSpot() {
-        std::cout << "Enter Spot ID to release: ";
-        int spotID;
-        std::cin >> spotID;
-
-        for (auto& spot : spots) {
-            if (spot.getID() == spotID && !spot.isAvailable()) {
-                double charges = spot.releaseSpot();
-                std::cout << "Spot " << spotID << " released. Charges: $" << charges << "\n";
-                saveReleaseDetails(spotID, charges);
-                return;
-            }
-        }
-        std::cout << "Invalid Spot ID or Spot is already available!\n";
-    }
-
-    void saveReleaseDetails(int spotID, double charges) {
-        std::ofstream outFile("parking_history.txt", std::ios::app);
-        if (outFile.is_open()) {
-            for (const auto& spot : spots) {
-                if (spot.getID() == spotID) {
-                    outFile << "Spot ID: " << spotID
-                            << " | Vehicle: " << spot.getVehicleNumber()
-                            << " | Parking Time: " << spot.getParkingTime()
-                            << " | Release Time: " << spot.getReleaseTime()
-                            << " | Charges: $" << charges << "\n";
-                }
-            }
-            outFile.close();
-        }
-    }
-
-    void loadDataFromFile(const std::string& filename) {
-        std::ifstream inFile(filename);
-        if (inFile.is_open()) {
-            int id;
-            bool isOccupied;
-            std::string vehicleNum;
-
-            while (inFile >> id >> isOccupied >> vehicleNum) {
-                spots[id - 1] = ParkingSpot(id);
-                if (!isOccupied) {
-                    spots[id - 1].reserveSpot(vehicleNum);
-                }
-            }
-            inFile.close();
-        }
-    }
-};
-
-
-int main() {
-    ParkingLot lot(10); // Initialize with 10 spots
-    lot.loadDataFromFile("parking_lot_data.txt");
-
-    int choice;
-    do {
-        displayMenu();
-        std::cin >> choice;
-
-        switch (choice) {
-        case 1:
-            lot.displayAvailableSpots();
-            break;
-        case 2:
-            lot.reserveSpot();
-            break;
-        case 3:
-            lot.releaseSpot();
-            break;
-        case 4:
-            lot.saveDataToFile("parking_lot_data.txt");
-            std::cout << "Data saved. Exiting...\n";
-            break;
-        default:
-            std::cout << "Invalid choice. Try again.\n";
-        }
-    } while (choice != 4);
-
-    return 0;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-class ParkingLot {
-private:
-    std::vector<ParkingSpot> spots;
-
-public:
-    ParkingLot(int numSpots) {
-        for (int i = 1; i <= numSpots; ++i) {
-            spots.emplace_back(i);
-        }
-    }
-
-    void displayAvailableSpots() {
-        std::cout << "Available Spots:\n";
-        for (const auto& spot : spots) {
-            if (spot.isAvailable()) {
-                spot.displaySpot();
-            }
-        }
-    }
-
-    void reserveSpot() {
-        std::cout << "Enter Vehicle Number: ";
-        std::string vehicleNum;
-        std::cin >> vehicleNum;
-
-        for (auto& spot : spots) {
-            if (spot.isAvailable()) {
-                if (spot.reserveSpot(vehicleNum)) {
-                    std::cout << "Spot " << spot.getID() << " reserved successfully!\n";
-                    return;
-                }
-            }
-        }
-        std::cout << "No available spots!\n";
-    }
-
-    void releaseSpot() {
-        std::cout << "Enter Spot ID to release: ";
-        int spotID;
-        std::cin >> spotID;
-
-        for (auto& spot : spots) {
-            if (spot.getID() == spotID && !spot.isAvailable()) {
-                double charges = spot.releaseSpot();
-                std::cout << "Spot " << spotID << " released. Charges: $" << charges << "\n";
-                saveReleaseDetails(spotID, charges);
-                return;
-            }
-        }
-        std::cout << "Invalid Spot ID or Spot is already available!\n";
-    }
-
-    void saveDataToFile(const std::string& filename) {
-        std::ofstream outFile(filename);
-        if (outFile.is_open()) {
-            for (const auto& spot : spots) {
-                outFile << spot.getID() << " "
-                        << (spot.isAvailable() ? 1 : 0) << " "
-                        << (spot.isAvailable() ? "None" : spot.getVehicleNumber()) << "\n";
-            }
-            outFile.close();
-        } else {
-            std::cerr << "Error: Unable to open file for saving data.\n";
-        }
-    }
-
-    void loadDataFromFile(const std::string& filename) {
-        std::ifstream inFile(filename);
-        if (inFile.is_open()) {
-            int id, isOccupied;
-            std::string vehicleNum;
-
-            while (inFile >> id >> isOccupied >> vehicleNum) {
-                spots[id - 1] = ParkingSpot(id);
-                if (!isOccupied) {
-                    spots[id - 1].reserveSpot(vehicleNum);
-                }
-            }
-            inFile.close();
-        } else {
-            std::cerr << "Error: Unable to open file for loading data.\n";
-        }
-    }
-
-    void saveReleaseDetails(int spotID, double charges) {
-        std::ofstream outFile("parking_history.txt", std::ios::app);
-        if (outFile.is_open()) {
-            for (const auto& spot : spots) {
-                if (spot.getID() == spotID) {
-                    outFile << "Spot ID: " << spotID
-                            << " | Vehicle: " << spot.getVehicleNumber()
-                            << " | Parking Time: " << spot.getParkingTime()
-                            << " | Release Time: " << spot.getReleaseTime()
-                            << " | Charges: $" << charges << "\n";
-                }
-            }
-            outFile.close();
-        } else {
-            std::cerr << "Error: Unable to open file for saving release details.\n";
-        }
-    }
-};
-
+[POC] 1, 1.1, 1.2, 1.2.1
+Application [1] [POC]
+    ::Driver Registration::
+    ::Login:: 
+
+    ::Driver Registration:: [1.1][POC] 
+        - page title
+        - form : name, password, email, phone, 
+                 car_number, car_model, car_type 
+            - fields: (caption, error message(s))
+                name {required}
+                password {required, strength}
+                email {required, isEmail, isExist}
+                phone {required, 10-digits isPhoneNumber, isExist}
+                car_number {required, isExist}
+                car_model {required}
+                car_type {selectable}
+        - on form submit: 
+            - allow to edit field / group of fields !XXX
+            - OR Confirm  
+            - OR Exit  
+        - after form submit:
+            - successful message 
+                "Driver named Minhaj registered successfully"
+    ::Login:: [1.2] [POC]
+        - page title
+        - form : username, password (caption, error message(s))
+            - fields 
+                username {required}
+                password {required}
+            - on form submit 
+                - Logging Into App 
+                OR
+                - Invalid Username / Password message.
+            - after form submit: 
+                - successful message welcoming the user
+                    "Successfully logged in, welcome Minhaj"
+                - DISPATCH / ROUTE to the page 
+        ::Driver Page::
+            ::Home Page:: [1.2.1] [POC]
+                - page title
+                Welcome minhaj!
+                Car: TN48 Z1020, Innova, SUV, Parking:[10-Feb-2025 10:00-21:00, Spot: GR-001 / Not Parked]
+                Reservation History ![last 10 - sort by date desc]
+                    Date    Start Time      End Time    Amount 
+                Nav Pages: 
+                    [1] View/Edit Profile [2] Do Reservation / [3] Pay and Unpark 
+                    [4] Change Password 
+                    [99] Logout 
+            ::Do Reservation:: [1.2.1.2] 
+                - page title
+                Welcome minhaj!
+                Car: TN48 Z1020, Innova, SUV, Parking: Not Parked
+                 - form : date, start_time, end_time
+                    - fields 
+                        date {required, isDate}
+                        start_time {required, isTime}
+                        end_time {required, isTime}
+                    - on form submit: 
+                        - allow to edit field / group of fields !XXX
+                        - OR Confirm  
+                        - OR Exit  
+                    - after form submit:
+                        - parking spot is allocated
+                        - successful message 
+                            "Reservation successful, spot GR-001 reserved under the name Minhaj"
+                            - booking number is generated
+            ::Pay and Unpark:: [1.2.1.3]
+                - page title
+                Welcome minhaj!
+                Car: TN48 Z1020, Innova, SUV, Parking:10-Feb-2025 10:00-21:00, Spot: GR-001
+                 - form : pay_mode 
+                    - fields                        
+                        actual_end_time {required, isTime} !!!{display <systetime>}
+                        duration {display <calculated>}
+                        amount  {display <calculated>}
+                        pay_mode {selectable}
+                    - on form submit: 
+                        - OR Confirm  
+                        - OR Exit  
+                    - after form submit:
+                        - successful message 
+                            "Unparking successful, Thank you Minhaj for using our service"
+                            - payment receipt number is generated
+            ::Driver Profile:: [1.2.1.1]
+                - page title
+                - form : name, email, phone, 
+                        car_number, car_model, car_type !!if no parking history 
+                    - fields: (caption, error message(s))
+                        name {required}
+                        email {required, isEmail, isExist}
+                        phone {required, 10-digits isPhoneNumber, isExist}
+                        car_number {required, isExist}
+                        car_model {required}
+                        car_type {selectable}
+                - on form submit: 
+                    - allow to edit field / group of fields !XXX
+                    - OR Confirm  
+                    - OR Exit  
+                - after form submit:
+                    - successful message 
+                        "Profile updated successfully"
+            ::Change Password:: [1.2.1.4]
+                - page title
+                - form : old_password, new_password
+                    - fields: (caption, error message(s))
+                        old_password {required}
+                        new_password {required, strength}
+                - on form submit: 
+                    - OR Confirm  
+                    - OR Exit  
+                - after form submit:
+                    - successful message 
+                        "Password changed successfully"
+                        - logout 
+        ::Admin Page::
+            ::Home Page:: [1.2.2]
+                - page title
+                Welcome Minhaj! 
+             -Nav Pages: 
+                    [1] Admins Management [2] Floor Management [3] Spot Management 
+                    [4] Bookings History [5] Payments History
+                    [99] Logout 
+            ::Admins Management:: [1.2.2.1]
+                -Nav Pages: 
+                        [1] Create [2] Edit [3] Display [4] Delete
+                        [5] Change Password 
+                        [99] Exit 
+                ::Create Admin:: [1.2.2.1.1]
+                    - page title
+                    - form : name, email, phone, password, role
+                        - fields: (caption, error message(s))
+                            name {required}
+                            password {required, strength}
+                            email {required, isEmail, isExist}
+                            phone {required, 10-digits isPhoneNumber, isExist}
+                    - on form submit: 
+                    - allow to edit field / group of fields !XXX
+                    - OR Confirm  
+                    - OR Exit  
+                    - after form submit:
+                        - successful message 
+                            "Admin Minhaj is created successfully"
+                ::Edit Admin:: [1.2.2.1.2]
+                    -page title 
+                    Search by phone number:
+                        phone {required, 10-digits isPhoneNumber, isExist}
+                    -form : name, email, phone, role, new name, new email, new phone, new role
+                    - fields: (caption, error message(s))
+                            - if exist
+                            name {display}
+                            email {display}
+                            phone {display}
+                            role {display}
+                            - edit
+                            new name {required}
+                            new email {required, isEmail, isExist}
+                            new phone {required, 10-digits isPhoneNumber, isExist}
+                            new role {required}
+                    - on form submit:
+                        - OR Confirm  
+                        - OR Exit 
+                    - after form submit:
+                        - successful message 
+                            "Updated the details successfully"
+                ::Delete Admin:: [1.2.2.1.4]
+                    -page title 
+                     Search by phone number:
+                        phone {required, 10-digits isPhoneNumber, isExist}
+                    -form : name, email, phone, role
+                    - fields: (caption, error message(s))
+                            - if exist
+                            name {display}
+                            email {display}
+                            phone {display}
+                            role {display}
+                    - on form submit:
+                        - OR Confirm  
+                        - OR Exit 
+                    - after form submit:
+                        - successful message
+                            "Admin deleted successfully"
+                ::Display all admin:: [1.2.2.1.3]
+                       Name       Email                Phone          Role
+                       -------    ---------           -------        -----------
+                        Minhaj     minhaj@gmail.com    9867453289     Admin
+                        Sana       sana@gmail.com      8976234589     Admin
+                ::Exit:: 
+                ::Change Password:: [1.2.2.1.5]
+                    - page title
+                    - form : old_password, new_password
+                        - fields: (caption, error message(s))
+                            old_password {required}
+                            new_password {required, strength}
+                    - on form submit: 
+                        - OR Confirm  
+                        - OR Exit  
+                    - after form submit:
+                        - successful message
+                            "Password changed successfully"
+                ::Exit::
+            ::Floor Management:: [1.2.2.2]
+                ::Home Page:: 
+                    -page title
+                    -Nav Pages:
+                        [1] Create [2] Edit [3] Search [4] Delete 
+                        [5] Display Spots Availability
+                        [99] Exit
+                ::Create Floor ::[1.2.2.2.1]
+                    form : floor number
+                    fields : (caption, error message(s))
+                        -floor number{required , isExist}
+                    -on form submit:
+                        -OR Confirm
+                        -OR Exit
+                    -after form submit:
+                        - successful message
+                            "Floor GR-001 created successfully"
+                ::Edit Floor:: [1.2.2.2.2]
+                      -form : floor number, new floor number
+                        -fields:
+                            -floor number{required , isExist}
+                            -new floor number{required , isexist}
+                        -on form submit:
+                            -OR Confirm
+                            -OR Exit
+                        -after form submit:
+                            - successful message
+                                "Floor number updated successfully"
+                ::Search Floor::  [1.2.2.2.3]
+                    -fields:
+                    -Search by floor number{required , isExist}
+                    --------------------------------------------------------------
+                    Floor id             Spot id
+                    --------------------------------------------------------------
+                    BS1        BS1-S001    BS1-S002    BS1-S003   BS1-S004  BS1-S00
+                    ---------------------------------------------------------------
+
+                :: Delete Floor ::  [1.2.2.2.4]
+                      -form : floor number
+                        -fields:
+                            -Search by floor Number{required , isExist}
+                        -on form submit:
+                            -OR Confirm
+                            -OR Exit
+                        -after form submit:
+                            - successful message
+                                "Floor GR-001 deleted successfully"
+                ::Display Spots Availability::  [1.2.2.2.5]
+                    -form : floor number
+                    -fields:
+                        -floor number {required , isExist} 
+                            Floor id                    Available Spot id
+                            ----------------------------------------------------------------
+                            BS1        BS1-S001    BS1-S002    BS1-S003   BS1-S004  BS1-S005
+                            GR1        GR1-S001    GR1-S002    GR1-S001   GR1-S001  GR1-S005
+                            GR2        GR2-S001    GR2-S002    GR2-S003   GR2-S004  GR2-S005 
+
+                ::Exit:: 
+            ::Spot Management:: [1.2.2.3] 
+                ::Home Page:: [1.2.2.3]
+                    -page title
+                    -Nav Pages: 
+                        [1] Create [2] Edit [3] Search [4] Delete 
+                        [99] Exit  
+               ::Create Spot::  [1.2.2.3.1]
+                    - form : Floor number, Spot id, Spot Charge per hr($),  Availability of spot
+                    - fields: Floor number: {required }
+                            Spot id: {required} 
+                            Spot Charge per hr($): {required}
+                            Availability of spot
+                     - ON form submit: 
+                        - allow to edit field / group of fields !XXX
+                        - OR Confirm  
+                        - OR Exit 
+                     - after form submit:
+                        -successful message 
+                            "Spot S001 created successfully"
+               ::Edit Spot::  [1.2.2.3.2]
+                     - form : Spot id, New spot id
+                       - fields: Spot id: {required}
+                                New spot id:{required}
+                        - ON form submit: 
+                            - OR Confirm  
+                            - OR Exit 
+                     - after form submit:
+                        -successful message 
+                            "Updated the spot id successfully"
+               ::Delete Spot:: [1.2.2.3.3]
+                    form : Spot id
+                      - fields: Spot id: {required }
+                     - ON form submit: 
+                         - OR Confirm  
+                         - OR Exit 
+                     - after form submit:
+                        -successful message 
+                            "Spot S001 deleted successfully"
+               ::Display all Spot:: [1.2.2.3.4]
+                       Floor id      Spot        Charge      Status
+                       ---------    ---------     -------   -----------
+                        BS          BS-S001       10$        available
+                        GR          GR-S002       10$        available
+                        GR          GR-S003       10$        available
+
+               ::Exit:: [1.2.2.3.5]
+             ::Bookings History:: [1.2.2.4]
+                    ::Today Bookings:: 
+                        -----------------------------------------------------------------------------
+                        |Time       |Car               |Driver       |Parking                       |
+                        -----------------------------------------------------------------------------
+                         10:00       TN 45 Z1020        Minhaj       GR-001 10:00-21:00
+                         06:00       TN 45 Z1020        Babu         GR-001 03:00-05:00
+
+                    ::Bookings By Date::
+                        - page title
+                        - form : date
+                        - fields: (caption, error message)
+                            date {required}
+                        - on form submit:
+                        --------------------------------------------------------------------------
+                        |Time       |Car             |Driver      |Parking                       |
+                        --------------------------------------------------------------------------
+                         10:00       TN 45 Z1020      Minhaj       GR-001  10:00-21:00
+                         07:00       TN 45 Z1020      Minhaj       GR-001  03:00-05:00
+                         10:00       TN 45 Z1020      Minhaj       GR-001  10:00-21:00
+                         07:00       TN 45 Z1020      Minhaj       GR-001  07:00-09:00
+
+                    ::Exit::  
+                        Go to Admin Page.
+            ::Payments History:: [1.2.2.5]
+                    ::Today Payments::
+                        ----------------------------------------------------------------------
+                        |Time       |Car                |Driver      |Parking     |Amount    |
+                        ----------------------------------------------------------------------
+                         10:00       TN  45 Z1020        Minhaj       GR-001       1000   
+
+                    ::Payments By Date::
+                        - page title
+                        - form : date
+                        - fields: (caption, error message)
+                            date {required}
+                        - on form submit:
+                        ----------------------------------------------------------------------
+                        |Time       |Car                |Driver      |Parking     |Amount    |
+                        ----------------------------------------------------------------------
+                         10:00       TN  45 Z1020        Minhaj       GR-001       1000
+                         10:00       TN  45 Z1020        Minhaj       GR-001       800
+
+                    ::Exit::
+            Return to Admin page 
+
+    
